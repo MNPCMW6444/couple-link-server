@@ -1,0 +1,31 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --platform=node --minify --format=cjs --outfile=dist/index.cjs",
+    "dev": "nodemon --watch './src/**/*' --ext js,mjs,cjs,json,ts src/dev.cjs",
+    "start": "npm i && npm run dev",
+    "prod": "npm i && npm run build"
+  },
+  "keywords": [],
+  "author": "Michael Nusair",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@apollo/server": "^4.9.3",
+    "dotenv": "^16.3.1",
+    "graphql": "^16.8.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.3"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.3",
+    "@types/node": "^20.7.2",
+    "esbuild": "^0.19.4",
+    "esbuild-register": "^3.5.0",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.2.2"
+  }
+}
