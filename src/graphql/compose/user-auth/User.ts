@@ -1,6 +1,6 @@
 import {composeWithMongoose} from 'graphql-compose-mongoose';
 import userModel from "../../../mongo/auth/userModel";
-import {getmeResolver, signinResolver, signreqResolver} from "./authResolvers";
+import {getmeResolver, signinResolver, signoutResolver, signreqResolver} from "./authResolvers";
 
 let UserTC;
 
@@ -60,6 +60,23 @@ export default () => {
                 resolve: getmeResolver
             }
         });
+
+
+
+        UserTC.addResolver({
+            name: 'signout',
+            type: 'String',
+            args: {},
+            resolve: signoutResolver
+        });
+        UserTC.addFields({
+            signout: {
+                type: 'String',
+                args: {},
+                resolve: signoutResolver
+            }
+        });
+
 
     }
 

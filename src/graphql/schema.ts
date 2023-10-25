@@ -16,6 +16,7 @@ export default () => {
     schemaComposer.Mutation.addFields({
         signreq: UserTC().getResolver('signreq'),
         signin: UserTC().getResolver('signin'),
+        signout: UserTC().getResolver('signout'),
     });
 
 

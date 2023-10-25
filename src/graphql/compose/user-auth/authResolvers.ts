@@ -67,3 +67,19 @@ export const signinResolver = async ({args, context}) => {
 
 
 export const getmeResolver = async ({context}) => context.user;
+
+
+export const signoutResolver = async ({context}) => {
+    const {res} = context;
+
+
+    res.cookie('jwt', null, {
+        httpOnly: true,
+        secure: settings.env !== "local",
+        maxAge: 24 * 60 * 60 * 1000,
+        expires: new Date(0),
+        sameSite: settings.env !== "local" ? 'strict' : 'lax'
+    });
+    return "good";
+
+};
