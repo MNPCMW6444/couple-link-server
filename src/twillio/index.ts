@@ -1,15 +1,16 @@
-import twillio from 'twilio';
+import twilio from 'twilio';
 import settings from "../settings";
 
-const client = twillio(settings.smsSid, settings.smsSecret);
+const client = twilio(settings.smsSid, settings.smsSecret);
 
 
-const sendSMS = (to: string, body: string, cb = async () => {}) => {
+const sendSMS =async (to: string, body: string, cb = async () => {}) => {
 
-    client.messages
+    return client.messages
         .create({
-            to: '+972528971871',
-            body: "asdfnsdkfbnjds"
+            from:settings.smsService,
+            to,
+            body
         })
         .then(message => {
             console.log(message.sid)

@@ -3,7 +3,7 @@ import settings from "../settings";
 
 export let connection: mongoose.Connection | null = null;
 
-export const connect = async () => {
+export const connect = async (cb = async()=>{}) => {
   console.log("Trying to connect mongodb...");
 
 
@@ -20,6 +20,7 @@ export const connect = async () => {
   connection.once("open", function () {
     // we're connected!
     console.log("Mongo DB connected successfully");
+      cb()
   });
 };
 
