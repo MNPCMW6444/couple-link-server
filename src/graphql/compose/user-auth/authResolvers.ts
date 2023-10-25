@@ -64,3 +64,6 @@ export const signinResolver = async ({args, context}) => {
     return "good";
 
 };
+
+
+export const getmeResolver = async ({context}) => context.user;

@@ -1,6 +1,6 @@
 import {composeWithMongoose} from 'graphql-compose-mongoose';
 import userModel from "../../../mongo/auth/userModel";
-import {signinResolver, signreqResolver} from "./authResolvers";
+import {getmeResolver, signinResolver, signreqResolver} from "./authResolvers";
 
 let UserTC;
 
@@ -44,6 +44,20 @@ export default () => {
                     phone: 'String!'
                 },
                 resolve: signinResolver
+            }
+        });
+
+        UserTC.addResolver({
+            name: 'getme',
+            type: UserTC,
+            args: {},
+            resolve: getmeResolver
+        });
+        UserTC.addFields({
+            getme: {
+                type: UserTC,
+                args: {},
+                resolve: getmeResolver
             }
         });
 
