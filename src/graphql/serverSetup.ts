@@ -5,7 +5,8 @@ import jsonwebtoken from "jsonwebtoken";
 import settings from "../settings";
 import userModel from "../mongo/auth/userModel";
 import cors from 'cors';
-import cookieParser  from "cookie-parser"
+import cookieParser from "cookie-parser"
+
 export default async () => {
 
 
@@ -41,7 +42,10 @@ export default async () => {
 
     const app = express();
 
-    app.use(cors({credentials: true, origin: ['http://localhost:5173',"https://studio.apollographql.com" ]}));
+    app.use(cors({
+        credentials: true,
+        origin: settings.env !== "local" ? ["https://scailean.com"] : ['http://localhost:5173', "https://studio.apollographql.com"]
+    }));
     app.use(cookieParser());
 
     await server.start()
