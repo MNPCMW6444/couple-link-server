@@ -26,13 +26,14 @@ export default () => {
                     $or: [{initiator: context.user._id}, {acceptor: context.user._id}],
                     active: true
                 });
-                const contactIds = pairs.map(({initiator, acceptor}) =>
-                    (initiator === context.user._id ? acceptor : initiator));
+                const contactIds = pairs.map(pair =>
+                    pair.initiator.toString() === context.user._id.toString() ? pair.acceptor.toString() : pair.initiator.toString()
+                );
                 const users = await User.find({_id: {$in: contactIds}});
                 return users.map(({phone}) => phone);
             }
-        });
 
+        });
 
         PairTC.addResolver({
             name: 'getinvitations',
@@ -42,11 +43,17 @@ export default () => {
             },
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                const areSent = args.sent ? {acceptor: context.user._id} : {initiator: context.user._id};
-                const invitationIds= await Pair.find({...areSent, active: false});
-                const users = await User.find({_id: {$in: invitationIds}});
+                const areSent = args.sent
+                    ? {initiator: context.user._id, active: false}
+                    : {acceptor: context.user._id, active: false};
+                const pairs = await Pair.find(areSent);
+                const userIds = pairs.map(pair =>
+                    pair.initiator.toString() === context.user._id.toString() ? pair.acceptor.toString() : pair.initiator.toString()
+                );
+                const users = await User.find({_id: {$in: userIds}});
                 return users.map(({phone}) => phone);
             }
+
         });
 
         PairTC.addResolver({
@@ -58,6 +65,7 @@ export default () => {
             resolve: async ({args, context}) => {
                 if (!args.contactPhone) throw new Error("Phone number is required");
                 if (!context.user) throw new Error("You are not signed in");
+                if (args.contactPhone === context.user.phone) throw new Error("You can't invite yourself");
 
                 const contactID = (await User.findOne({phone: args.contactPhone})
                     || await (new User({phone: args.contactPhone})).save())._id;
@@ -81,17 +89,24 @@ export default () => {
             name: 'agreepair',
             type: 'String',
             args: {
-                pairId: 'String!'
+                phone: 'String!'
             },
             resolve: async ({args, context}) => {
-                if (!args.pairId) throw new Error("The pair id of pair to agree is required");
+                if (!args.phone) throw new Error("The phone of initiator to agree is required");
                 if (!context.user) throw new Error("You are not signed in");
-
-                const pair = await Pair.findById(args.pairId);
-
-                if (pair.acceptor.toString() === context.user._id.toString()) {
-                    pair.active = true;
-                    await pair.save();
+                const pairs = await Pair.find();
+                let matchedPair = null;
+                for (let pair of pairs) {
+                    const person = await User.findOne({_id: pair.initiator});
+                    if (person && person.phone === args.phone) {
+                        matchedPair = pair;
+                        break;
+                    }
+                }
+                if (!matchedPair) throw new Error("No pair found for the provided initiator phone");
+                if (matchedPair.acceptor.toString() === context.user._id.toString()) {
+                    matchedPair.active = true;
+                    await matchedPair.save();
                     return "good";
                 }
                 throw new Error("Bad ownership");
