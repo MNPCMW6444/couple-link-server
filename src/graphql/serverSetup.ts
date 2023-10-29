@@ -8,7 +8,7 @@ import cors from 'cors';
 import cookieParser from "cookie-parser"
 
 export default async () => {
-
+if (!schema) throw new Error("No schema");
 
     const server = new ApolloServer({
         schema: schema(),

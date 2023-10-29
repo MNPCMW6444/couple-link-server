@@ -1,29 +1,26 @@
 import {SchemaComposer} from 'graphql-compose';
-
 import UserTC from './compose/user-auth/UserTC';
 import PairTC from "./compose/contacts/PairTC";
 
-
 export default () => {
-
     const schemaComposer = new SchemaComposer();
-
-
+    const User = UserTC && UserTC();
+    console.log("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+    const Pair = PairTC && PairTC();
+    if(!User || !Pair) {
+        return null;
+    }
     schemaComposer.Query.addFields({
-        getme: UserTC().getResolver('getme'),
-        getcontacts : PairTC().getResolver('getcontacts'),
-        getinvitations : PairTC().getResolver('getinvitations'),
+        getme: User.getResolver('getme'),
+        getcontacts: Pair.getResolver('getcontacts'),
+        getinvitations: Pair.getResolver('getinvitations'),
     });
-
-
     schemaComposer.Mutation.addFields({
-        signreq: UserTC().getResolver('signreq'),
-        signin: UserTC().getResolver('signin'),
-        signout: UserTC().getResolver('signout'),
-        newpair: PairTC().getResolver('newpair'),
-        agreepair: PairTC().getResolver('agreepair'),
+        signreq: User.getResolver('signreq'),
+        signin: User.getResolver('signin'),
+        signout: User.getResolver('signout'),
+        newpair: Pair.getResolver('newpair'),
+        agreepair: Pair.getResolver('agreepair'),
     });
-
-
     return schemaComposer.buildSchema()
 }

@@ -9,8 +9,7 @@ let PairTC;
 
 export default () => {
     if (!PairTC) {
-        const customizationOptions = {name: 'UniquePairTypeName'};
-        PairTC = composeWithMongoose(pairModel(), customizationOptions);
+        PairTC = composeWithMongoose(pairModel(), {});
 
         const User = userModel();
         const Code = codeModel();

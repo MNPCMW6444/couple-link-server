@@ -8,6 +8,7 @@
     "dev": "nodemon --watch './src/**/*' --ext js,mjs,cjs,json,ts src/dev.cjs",
     "update": "npx npm-check-updates -u && npm i",
     "start": "npm i && npm run dev",
+    "tsc": "tsc",
     "prod": "npm i --omit-dev && npm run build"
   },
   "keywords": [],
