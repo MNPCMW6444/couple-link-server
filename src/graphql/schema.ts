@@ -12,6 +12,7 @@ export default () => {
     schemaComposer.Query.addFields({
         getme: UserTC().getResolver('getme'),
         getcontacts : PairTC().getResolver('getcontacts'),
+        getinvitations : PairTC().getResolver('getinvitations'),
     });
 
 
