@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --platform=node --minify --format=cjs --outfile=dist/index.cjs",
+    "build": "esbuild src/index.ts --bundle --platform=node --minify --format=cjs --outfile=dist/index.cjs --external:graphql\n",
     "dev": "nodemon --watch './src/**/*' --ext js,mjs,cjs,json,ts src/dev.cjs",
     "update": "npx npm-check-updates -u && npm i",
     "start": "npm i && npm run dev",
