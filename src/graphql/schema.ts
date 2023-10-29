@@ -5,7 +5,6 @@ import PairTC from "./compose/contacts/PairTC";
 export default () => {
     const schemaComposer = new SchemaComposer();
     const User = UserTC && UserTC();
-    console.log("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
     const Pair = PairTC && PairTC();
     if(!User || !Pair) {
         return null;

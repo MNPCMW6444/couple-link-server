@@ -14,6 +14,7 @@ export default () => {
 
         UserTC = composeWithMongoose(User);
 
+
         UserTC.addResolver({
             name: 'signreq',
             type: 'String',

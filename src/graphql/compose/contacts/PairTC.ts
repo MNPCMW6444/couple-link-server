@@ -6,14 +6,14 @@ import codeModel from "../../../mongo/auth/codeModel";
 
 let PairTC;
 
-
 export default () => {
     if (!PairTC) {
-        PairTC = composeWithMongoose(pairModel(), {});
+        PairTC = composeWithMongoose(pairModel());
 
         const User = userModel();
         const Code = codeModel();
         const Pair = pairModel();
+
 
         PairTC.addResolver({
             name: 'getcontacts',
