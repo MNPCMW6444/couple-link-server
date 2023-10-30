@@ -3,6 +3,7 @@ import pairModel from "../../../mongo/contacts/pairModel";
 import {composeWithMongoose} from "graphql-compose-mongoose";
 import {safeResolvers} from "../../schema";
 import sessionModel from "../../../mongo/messages/sessionModel";
+import {fireAI} from "../../../ai/callOpenAI";
 
 let MessageTC;
 
@@ -92,14 +93,17 @@ export default () => {
                 if (!context.user) throw new Error("Please sign in first");
                 if (!args.sessionId) throw new Error("Please provide session id");
                 if (!args.message) throw new Error("Please provide message");
-                const messages = await getTriplets(context.user.phone, args.sessionId);
-                if(messages[messages.length-1][0] || (messages[messages.length-1][0] && messages[messages.length-1][1] && messages[messages.length-1][2])) throw new Error("Please wait for your turn");
+                let messages = await getTriplets(context.user.phone, args.sessionId);
+                if (messages[messages.length - 1][0] || (messages[messages.length - 1][0] && messages[messages.length - 1][1] && messages[messages.length - 1][2])) throw new Error("Please wait for your turn");
                 const newMessage = new Message({
                     sessionId: args.sessionId,
                     owner: context.user.phone,
                     message: args.message
                 });
-                return (await newMessage.save())._id.toString();
+                await newMessage.save();
+                messages = await getTriplets(context.user.phone, args.sessionId);
+                if (messages[messages.length - 1][0] && messages[messages.length - 1][1] && (!(messages[messages.length - 1][2]))) fireAI();
+                return "good";
             }
         });
     }
