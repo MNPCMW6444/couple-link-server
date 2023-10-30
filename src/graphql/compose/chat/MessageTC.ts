@@ -56,7 +56,7 @@ export default () => {
                 let me="", other="", ai="";
                 const triplets = [];
                 messages.forEach((message)=>{
-                    if(message.owner === context.user.number){
+                    if(message.owner === context.user.phone){
                         me = message.message;
                     }else if(message.owner === "ai"){
                         ai = message.message;
