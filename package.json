@@ -21,6 +21,7 @@
     "esbuild": "^0.19.5",
     "graphql-compose-mongoose": "^9.8.0",
     "mongoose": "^7.6.3",
+    "openai": "^4.14.2",
     "source-map-support": "^0.5.21",
     "twilio": "^4.19.0"
   },

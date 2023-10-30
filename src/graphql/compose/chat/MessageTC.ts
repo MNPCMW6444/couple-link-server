@@ -3,7 +3,7 @@ import pairModel from "../../../mongo/contacts/pairModel";
 import {composeWithMongoose} from "graphql-compose-mongoose";
 import {safeResolvers} from "../../schema";
 import sessionModel from "../../../mongo/messages/sessionModel";
-import {fireAI} from "../../../ai/callOpenAI";
+import {fireAI} from "../../../ai/ai";
 
 let MessageTC;
 
@@ -102,7 +102,7 @@ export default () => {
                 });
                 await newMessage.save();
                 messages = await getTriplets(context.user.phone, args.sessionId);
-                if (messages[messages.length - 1][0] && messages[messages.length - 1][1] && (!(messages[messages.length - 1][2]))) fireAI();
+                if (messages[messages.length - 1][0] && messages[messages.length - 1][1] && (!(messages[messages.length - 1][2]))) fireAI(args.sessionId);
                 return "good";
             }
         });
