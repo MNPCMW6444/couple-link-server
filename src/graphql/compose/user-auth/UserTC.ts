@@ -16,7 +16,7 @@ export default () => {
         try {
             UserTC = composeWithMongoose(User);
         } catch (e) {
-            UserTC = composeWithMongoose(User, {resolvers: safeResolvers});
+            UserTC = composeWithMongoose(User, {resolvers: safeResolvers, name:"newuser"});
         }
 
         UserTC.addResolver({

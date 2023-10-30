@@ -18,7 +18,7 @@ export default () => {
         try {
             PairTC = composeWithMongoose(Pair);
         } catch (e) {
-            PairTC = composeWithMongoose(Pair, {resolvers: safeResolvers});
+            PairTC = composeWithMongoose(Pair, {resolvers: safeResolvers, name:"newpair"});
         }
 
         PairTC.addResolver({
