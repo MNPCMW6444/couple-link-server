@@ -1,17 +1,12 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
 
-const messageModel = new mongoose.Schema(
+const sessionModel = new mongoose.Schema(
     {
-        owner: {
-            type: String, // number || ai
-            required: true,
-        },
-        sessionId: {type: String, required: true},
-        message: {
+        pairId: {
             type: String,
             required: true,
-        }
+        },
     },
     {
         timestamps: true,
@@ -21,5 +16,5 @@ const messageModel = new mongoose.Schema(
 
 export default () => {
     if (!connection) throw new Error("Database not initialized");
-    return connection.model("message", messageModel);
+    return connection.model("session", sessionModel);
 };

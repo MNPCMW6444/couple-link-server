@@ -18,7 +18,7 @@ export default () => {
         try {
             PairTC = composeWithMongoose(Pair);
         } catch (e) {
-            PairTC = composeWithMongoose(Pair, {resolvers: safeResolvers, name:"newpair"});
+            PairTC = composeWithMongoose(Pair, {resolvers: safeResolvers, name: "newpair"});
         }
 
         PairTC.addResolver({
@@ -35,7 +35,9 @@ export default () => {
                     pair.initiator.toString() === context.user._id.toString() ? pair.acceptor.toString() : pair.initiator.toString()
                 );
                 const users = await User.find({_id: {$in: contactIds}});
-                return users.map(({phone}) => phone);
+                return users.map(({phone}, i) => JSON.stringify({
+                    phone, pairId: pairs[i]._id.toString()
+                }))
             }
 
         });
