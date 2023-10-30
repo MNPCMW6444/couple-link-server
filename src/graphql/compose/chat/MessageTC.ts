@@ -1,5 +1,4 @@
 import messageModel from "../../../mongo/messages/messageModel";
-import userModel from "../../../mongo/auth/userModel";
 import pairModel from "../../../mongo/contacts/pairModel";
 import {composeWithMongoose} from "graphql-compose-mongoose";
 import {safeResolvers} from "../../schema";
@@ -10,7 +9,6 @@ let MessageTC;
 export default () => {
     if (!MessageTC) {
 
-        const User = userModel();
         const Pair = pairModel();
         const Message = messageModel();
         const Session = sessionModel();
@@ -53,7 +51,7 @@ export default () => {
             args: {sessionId: 'String!'},
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                if (!args.pairNumber) throw new Error("Please provide pair number");
+                if (!args.sessionId) throw new Error("Please provide session id");
                 const messages = await Message.find({sessionId: args.sessionId});
                 let me="", other="", ai="";
                 const triplets = [];
