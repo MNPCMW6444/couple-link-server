@@ -88,7 +88,8 @@ export default () => {
                 if (!context.user) throw new Error("Please sign in first");
                 if (!args.sessionId) throw new Error("Please provide session id");
                 if (!args.message) throw new Error("Please provide message");
-                const newMessage = new Message({sessionId: args.sessionId, owner: context.user.number, message: args.message});
+                console.log(context.user.number);
+                const newMessage = new Message({sessionId: args.sessionId, owner: context.user.phone, message: args.message});
                 return (await newMessage.save())._id.toString();
             }
         });
