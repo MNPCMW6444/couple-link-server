@@ -2,6 +2,25 @@ import {SchemaComposer} from 'graphql-compose';
 import UserTC from './compose/user-auth/UserTC';
 import PairTC from "./compose/contacts/PairTC";
 
+export const safeResolvers =  {
+    count: false,
+        findById: false,
+        findByIds: false,
+        findMany: false,
+        findOne: false,
+        dataLoader: false,
+        dataLoaderMany: false,
+        createOne: false,
+        createMany: false,
+        updateById: false,
+        updateOne: false,
+        updateMany: false,
+        removeById: false,
+        removeOne: false,
+        removeMany: false,
+        pagination: false,
+        connection: false
+}
 export default () => {
     const schemaComposer = new SchemaComposer();
     const User = UserTC && UserTC();

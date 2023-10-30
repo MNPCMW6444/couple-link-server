@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --platform=node --minify --format=cjs --outfile=dist/index.cjs --external:graphql\n",
+    "build": "esbuild src/index.ts --bundle --platform=node --minify --format=cjs --outfile=dist/index.cjs",
     "dev": "nodemon --watch './src/**/*' --ext js,mjs,cjs,json,ts src/dev.cjs",
     "update": "npx npm-check-updates -u && npm i",
     "start": "npm i && npm run dev",
@@ -21,6 +21,7 @@
     "esbuild": "^0.19.5",
     "graphql-compose-mongoose": "^9.8.0",
     "mongoose": "^7.6.3",
+    "source-map-support": "^0.5.21",
     "twilio": "^4.19.0"
   },
   "devDependencies": {

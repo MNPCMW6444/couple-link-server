@@ -3,17 +3,23 @@ import pairModel from "../../../mongo/contacts/pairModel";
 import {sendSMS} from "../../../twillio";
 import userModel from "../../../mongo/auth/userModel";
 import codeModel from "../../../mongo/auth/codeModel";
+import {safeResolvers} from "../../schema";
 
 let PairTC;
 
 export default () => {
     if (!PairTC) {
-        PairTC = composeWithMongoose(pairModel());
+
 
         const User = userModel();
         const Code = codeModel();
         const Pair = pairModel();
 
+        try {
+            PairTC = composeWithMongoose(Pair);
+        } catch (e) {
+            PairTC = composeWithMongoose(Pair, {resolvers: safeResolvers});
+        }
 
         PairTC.addResolver({
             name: 'getcontacts',
@@ -114,4 +120,5 @@ export default () => {
     }
 
     return PairTC;
-};
+}
+;
