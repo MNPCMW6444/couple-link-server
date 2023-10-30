@@ -2,7 +2,7 @@ import {SchemaComposer} from 'graphql-compose';
 import UserTC from './compose/user-auth/UserTC';
 import PairTC from "./compose/contacts/PairTC";
 
-export const safeResolvers =  {
+export const safeResolvers:any =  {
     count: false,
         findById: false,
         findByIds: false,
