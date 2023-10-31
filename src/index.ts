@@ -1,6 +1,3 @@
-import 'source-map-support/register';
-
-
 import {connect} from "./mongo/connection"
 import serverSetup from "./graphql/serverSetup"
 
