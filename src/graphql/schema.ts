@@ -2,10 +2,10 @@ import {SchemaComposer} from 'graphql-compose';
 import UserTC from './compose/user-auth/UserTC';
 import PairTC from "./compose/contacts/PairTC";
 import MessageTC from "./compose/chat/MessageTC";
-import {PubSub} from 'graphql-subscriptions';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
 import {AllResolversOpts} from "graphql-compose-mongoose";
 
-export const pubsub = new PubSub();
+export const pubsub = new RedisPubSub();
 
 export const safeResolvers: AllResolversOpts = {
     count: false,
