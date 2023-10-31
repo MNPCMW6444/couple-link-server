@@ -1,7 +1,7 @@
 import messageModel from "../../../mongo/messages/messageModel";
 import pairModel from "../../../mongo/contacts/pairModel";
 import {composeWithMongoose} from "graphql-compose-mongoose";
-import {safeResolvers} from "../../schema";
+import {pubsub, safeResolvers} from "../../schema";
 import sessionModel from "../../../mongo/messages/sessionModel";
 import {fireAI} from "../../../ai/ai";
 
@@ -106,8 +106,17 @@ export default () => {
                 return "good";
             }
         });
+
+        MessageTC.addResolver({
+            name: "messageUpdate",
+            type: MessageTC,
+            args: {},
+            subscribe: () =>
+                pubsub.asyncIterator(["messageUpdate"])
+            ,
+            resolve: (payload) => payload
+        });
     }
 
     return MessageTC;
 }
-;

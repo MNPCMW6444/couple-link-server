@@ -1,47 +1,20 @@
 import express from 'express';
-import {ApolloServer, AuthenticationError} from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
+import { execute, subscribe } from 'graphql';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+import http from 'http';
 import schema from "./schema";
 import jsonwebtoken from "jsonwebtoken";
 import settings from "../settings";
 import userModel from "../mongo/auth/userModel";
 import cors from 'cors';
-import cookieParser from "cookie-parser"
+import cookieParser from "cookie-parser";
+import subscriptions from "./subscriptions";
 
 export default async () => {
-if (!schema) throw new Error("No schema");
-
-    const server = new ApolloServer({
-        schema: schema(),
-        context: async ({req, res}) => {
-
-
-            let token;
-
-
-            if (req.cookies && req.cookies.jwt) {
-                token = req.cookies.jwt;
-            } else {
-                token = null;
-            }
-            let decoded;
-            try {
-                decoded = token ? jsonwebtoken.verify(token, settings.jwtSecret) : null;
-            } catch (err) {
-                decoded = null;
-            }
-            if (typeof decoded !== 'object' || !decoded?.id) {
-                return {req, res, user: null};
-            }
-            const user = await userModel().findById(decoded.id);
-            if (!user) {
-                return {req, res, user: null};
-            }
-            return {req, res, user};
-        }, introspection: settings.env === "local",
-    });
+    if (!schema) throw new Error("No schema");
 
     const app = express();
-
 
     app.use(cors({
         credentials: true,
@@ -49,10 +22,44 @@ if (!schema) throw new Error("No schema");
     }));
     app.use(cookieParser());
 
-    await server.start()
-    server.applyMiddleware({app, path: '/', cors: false});
+    const server = new ApolloServer({
+        schema: schema(),
+        context: async ({ req, res }) => {
+            let token = req.cookies?.jwt || null;
+            let decoded = null;
+            try {
+                decoded = token ? jsonwebtoken.verify(token, settings.jwtSecret) : null;
+            } catch (err) { }
+            if (typeof decoded !== 'object' || !decoded?.id) {
+                return { req, res, user: null };
+            }
+            const user = decoded ? await userModel().findById(decoded.id) : null;
+            return { req, res, user: user || null };
+        },
+        introspection: settings.env === "local",
+        plugins: [{
+            async serverWillStart() {
+                return {
+                    async drainServer() {
+                        subscriptionServer.close();
+                    }
+                };
+            }
+        }],
+    });
 
-    app.listen({port: 6005}, () =>
-        console.log(`🚀 Server ready at http://localhost:6005${server.graphqlPath}`)
+    await server.start();
+    server.applyMiddleware({ app, path: '/', cors: false });
+
+    const httpServer = http.createServer(app);
+    const subscriptionServer = SubscriptionServer.create(
+        { schema: schema(), execute, subscribe },
+        { server: httpServer, path: server.graphqlPath }
     );
-}
+
+    httpServer.listen(6005, () => {
+        console.log(`🚀 Server ready at http://localhost:6005${server.graphqlPath}`);
+        console.log(`🚀 Subscriptions ready at ws://localhost:6005${server.graphqlPath}`);
+        subscriptions();
+    });
+};
