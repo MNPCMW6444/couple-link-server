@@ -73,7 +73,7 @@ export default () => {
                 if (!args.contactPhone) throw new Error("Phone number is required");
                 if (!context.user) throw new Error("You are not signed in");
                 if (args.contactPhone === context.user.phone) throw new Error("You can't invite yourself");
-
+                if (args.contactPhone[0] === '+') args.contactPhone = args.contactPhone.substring(1, args.contactPhone.length)
                 const contactID = (await User.findOne({phone: args.contactPhone})
                     || await (new User({phone: args.contactPhone})).save())._id;
 

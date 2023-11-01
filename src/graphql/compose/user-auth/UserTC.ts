@@ -27,8 +27,10 @@ export default () => {
             },
             resolve: async ({args, context}) => {
                 if (context.user) throw new Error("You are already signed in");
+                if (!args.phone) throw new Error("Phone number is required");
+                if (args.phone[0] === '+') args.phone = args.phone.substring(1, args.phone.length)
                 const newCode = new Code({
-                    user: (await User.findOne({phone: args.phone}) || await (new User({phone: args.phone})).save())._id,
+                    user: (await User.findOne({phone: args.phone}) || await (new User({phone: args.phone })).save())._id,
                     code: Math.floor(100000 + Math.random() * 900000)
                 });
                 await newCode.save();
@@ -46,6 +48,8 @@ export default () => {
             },
             resolve: async ({args, context}) => {
                 const {res} = context;
+                if (!args.phone) throw new Error("Phone number is required");
+                if (args.phone[0] === '+') args.phone = args.phone.substring(1, args.phone.length)
                 const user = await User.findOne({phone: args.phone});
                 const isValidCode = await Code.findOne({
                     code: args.code,

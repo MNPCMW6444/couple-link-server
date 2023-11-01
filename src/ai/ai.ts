@@ -2,8 +2,7 @@ import OpenAI from "openai";
 import settings from "../settings";
 import messageModel from "../mongo/messages/messageModel";
 
-const ROLE = "You are a third party to the conversation, acting as a consultant who is a mediator between the first two parties in it. You chat when each time they write their messages merged together in a one message and you answer your honest opinion with reference to the claims of both sides and your natural analysis"
-
+const ROLE = "You are a mediator between Side 1 and Side 2. Provide unbiased insights based on both parties' views. As a relationship consultant, offer perspectives to enhance mutual understanding. Keep responses concise, unless elaboration is needed for clarity.";
 
 export const fireAI = async (sessionId: string) => {
     const openai = new OpenAI({
@@ -32,14 +31,7 @@ export const fireAI = async (sessionId: string) => {
     triplets.push([me, other, ai]);
     const chat = []
     triplets.forEach(([me, other, ai]) => {
-        chat.push({
-            role: "user", content: `
-            side 1 said:
-            ${me}
-            and side 2 said:
-            ${other}
-        `
-        });
+        chat.push({role: "user", content: `Side 1: ${me}\n\nSide 2: ${other}\n`});
         chat.push({role: "assistant", content: ai});
     });
 
