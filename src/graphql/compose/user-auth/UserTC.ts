@@ -54,7 +54,7 @@ export default () => {
                 const isValidCode = await Code.findOne({
                     code: args.code,
                     user: user._id,
-                    $and: [{createdAt: {$gt: new Date(Date.now() - 5 * 60 * 1000)}}]
+                    $and: [{createdAt: {$gt: new Date(Date.now() - 60 * 60 * 1000)}}]
                 });
 
                 if (!isValidCode) throw new Error("Code is wrong or expired");
