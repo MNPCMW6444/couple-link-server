@@ -83,8 +83,7 @@ export default () => {
                 });
 
                 await newCode.save();
-                await sendSMS(args.contactPhone, `You have been invited. Your code is: ${newCode.code}`);
-
+                await sendSMS(args.contactPhone, `You have been invited to chat with ${context.user.phone}. Login at https://scailean.com/login?code=${newCode.code} to accept the invitation`);
                 const newPair = new Pair({initiator: context.user._id, acceptor: contactID});
                 await newPair.save();
 
