@@ -98,12 +98,12 @@ export default () => {
                 const newMessage = new Message({
                     sessionId: args.sessionId,
                     owner: context.user.phone,
-                    ownerid: context.user._id.toString()   ,
+                    ownerid: context.user._id.toString(),
                     message: args.message
                 });
                 await newMessage.save();
                 messages = await getTriplets(context.user.phone, args.sessionId);
-                if (messages[messages.length - 1][0] && messages[messages.length - 1][1] && (!(messages[messages.length - 1][2]))) fireAI(args.sessionId).then();
+                if (messages[messages.length - 1][0] && messages[messages.length - 1][1] && (!(messages[messages.length - 1][2]))) fireAI(args.sessionId).then(); else console.log("waiting for both sides")
                 return "good";
             }
         });

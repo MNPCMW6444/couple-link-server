@@ -69,7 +69,7 @@ export const fireAI = async (sessionId: string) => {
         }*/
 
 
-    const aiMessage = new (messageModel())({sessionId, owner: "ai", message: (completion).choices[0].message?.content});
+    const aiMessage = new (messageModel())({sessionId, owner: "ai", ownerid:"ai", message: (completion).choices[0].message?.content});
     await aiMessage.save();
 
 
