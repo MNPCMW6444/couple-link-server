@@ -83,7 +83,7 @@ export default () => {
                 });
 
                 await newCode.save();
-                await sendSMS(args.contactPhone, `You have been invited to chat with ${context.user.phone}. Login at https://scailean.com/login?code=${newCode.code} to accept the invitation`);
+                await sendSMS(args.contactPhone, `You have been invited to chat with ${context.user.phone}. Login at https://scailean.com/login?code=${newCode.code} to accept the invitation. The code will expire in 1 hour, but you can always get a new one to log in and review the invitation.`);
                 const newPair = new Pair({initiator: context.user._id, acceptor: contactID});
                 await newPair.save();
 

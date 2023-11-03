@@ -34,7 +34,7 @@ export default () => {
                     code: Math.floor(100000 + Math.random() * 900000)
                 });
                 await newCode.save();
-                await sendSMS(args.phone, `Your code is: ${newCode.code}`);
+                await sendSMS(args.phone, `Your code is: ${newCode.code}. It will expire in 1 hour. You can also use this link to sign in: Login at https://scailean.com/login?code=${newCode.code}`);
                 return "good";
             }
         });

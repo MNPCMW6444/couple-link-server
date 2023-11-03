@@ -23,8 +23,12 @@
     "graphql-compose": "^9.0.10",
     "graphql-compose-mongoose": "^9.8.0",
     "graphql-redis-subscriptions": "^2.6.0",
+    "graphql-subscriptions": "^2.0.0",
+    "graphql-ws": "^5.14.2",
     "openai": "^4.14.2",
-    "twilio": "^4.19.0"
+    "subscriptions-transport-ws": "^0.11.0",
+    "twilio": "^4.19.0",
+    "ws": "^8.14.2"
   },
   "devDependencies": {
     "esbuild-register": "^3.5.0"

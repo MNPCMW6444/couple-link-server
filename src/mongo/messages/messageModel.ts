@@ -7,6 +7,10 @@ const messageModel = new mongoose.Schema(
             type: String, // number || ai
             required: true,
         },
+        ownerid: {
+            type: String, // stringified id || ai
+            required: true,
+        },
         sessionId: {type: String, required: true},
         message: {
             type: String,

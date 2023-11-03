@@ -1,7 +1,7 @@
 import messageModel from "../../../mongo/messages/messageModel";
 import pairModel from "../../../mongo/contacts/pairModel";
 import {composeWithMongoose} from "graphql-compose-mongoose";
-import {pubsub, safeResolvers} from "../../schema";
+import {safeResolvers} from "../../schema";
 import sessionModel from "../../../mongo/messages/sessionModel";
 import {fireAI} from "../../../ai/ai";
 
@@ -98,6 +98,7 @@ export default () => {
                 const newMessage = new Message({
                     sessionId: args.sessionId,
                     owner: context.user.phone,
+                    ownerid: context.user._id.toString()   ,
                     message: args.message
                 });
                 await newMessage.save();
@@ -107,15 +108,6 @@ export default () => {
             }
         });
 
-        MessageTC.addResolver({
-            name: "messageUpdate",
-            type: MessageTC,
-            args: {},
-            subscribe: () =>
-                pubsub.asyncIterator(["messageUpdate"])
-            ,
-            resolve: (payload) => payload
-        });
     }
 
     return MessageTC;

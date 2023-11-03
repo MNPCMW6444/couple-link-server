@@ -2,10 +2,9 @@ import {SchemaComposer} from 'graphql-compose';
 import UserTC from './compose/user-auth/UserTC';
 import PairTC from "./compose/contacts/PairTC";
 import MessageTC from "./compose/chat/MessageTC";
-import { RedisPubSub } from 'graphql-redis-subscriptions';
 import {AllResolversOpts} from "graphql-compose-mongoose";
+import {pubsub} from "./serverSetup";
 
-export const pubsub = new RedisPubSub();
 
 export const safeResolvers: AllResolversOpts = {
     count: false,
@@ -56,9 +55,20 @@ export default () => {
         sendmessage: Message.getResolver('sendmessage')
     });
 
+
+
     schemaComposer.Subscription.addFields({
-        messageUpdate: Message.getResolver('messageUpdate')
-    })
+        newMessage: {
+            type: MessageTC(), // assuming you have a MessageType defined
+            description: 'Subscribe to new messages',
+            subscribe: () => pubsub.asyncIterator('newMessage'),
+            resolve: (payload) => {
+                return payload.newMessage;
+            },
+        },
+    });
+
+
 
     return schemaComposer.buildSchema();
 };
