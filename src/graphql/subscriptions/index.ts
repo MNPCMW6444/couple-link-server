@@ -1,5 +1,5 @@
-import messages from "./messages";
+import chat from "./chat";
 
 export default () => {
-    messages();
+    chat();
 }

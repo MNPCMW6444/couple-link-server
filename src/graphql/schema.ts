@@ -1,9 +1,11 @@
 import {SchemaComposer} from 'graphql-compose';
 import UserTC from './compose/user-auth/UserTC';
 import PairTC from "./compose/contacts/PairTC";
-import MessageTC from "./compose/chat/MessageTC";
+import MessageTC, {SessionTC} from "./compose/chat/MessageTC";
 import {AllResolversOpts} from "graphql-compose-mongoose";
 import {pubsub} from "./serverSetup";
+
+
 
 
 export const safeResolvers: AllResolversOpts = {
@@ -59,11 +61,19 @@ export default () => {
 
     schemaComposer.Subscription.addFields({
         newMessage: {
-            type: MessageTC(), // assuming you have a MessageType defined
+            type: Message,
             description: 'Subscribe to new messages',
             subscribe: () => pubsub.asyncIterator('newMessage'),
             resolve: (payload) => {
                 return payload.newMessage;
+            },
+        },
+        newSession: {
+            type: SessionTC,
+            description: 'Subscribe to new messages',
+            subscribe: () => pubsub.asyncIterator('newSession'),
+            resolve: (payload) => {
+                return payload.newSession;
             },
         },
     });
