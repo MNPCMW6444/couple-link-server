@@ -6,7 +6,8 @@ import sessionModel from "../../../mongo/messages/sessionModel";
 import {fireAI} from "../../../ai/ai";
 
 let MessageTC;
-export let SessionTC;
+
+
 
 
 export default () => {
@@ -42,7 +43,6 @@ export default () => {
 
         try {
             MessageTC = composeWithMongoose(Message);
-            SessionTC = composeWithMongoose(Session);
         } catch (e) {
             MessageTC = composeWithMongoose(Message, {resolvers: safeResolvers, name: "newmessage"});
         }

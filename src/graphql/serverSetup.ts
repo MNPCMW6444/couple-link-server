@@ -20,6 +20,7 @@ export const pubsub = new PubSub();
 
 export default async () => {
     if (!schema) throw new Error("No schema");
+    const schemaX = await schema();
     const app = express();
     app.use(cors({
         credentials: true,
@@ -27,7 +28,7 @@ export default async () => {
     }));
     app.use(cookieParser());
     const server = new ApolloServer({
-        schema: schema(),
+        schema: schemaX,
         context: async ({req, res}) => {
             let token = req.cookies?.jwt || null;
             let decoded = null;
@@ -60,7 +61,7 @@ export default async () => {
 
     SubscriptionServer.create(
         {
-            schema: schema(),
+            schema: schemaX,
             execute,
             subscribe,
         },
