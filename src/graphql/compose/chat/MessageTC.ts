@@ -1,21 +1,14 @@
 import messageModel from "../../../mongo/messages/messageModel";
-import pairModel from "../../../mongo/contacts/pairModel";
 import {composeWithMongoose} from "graphql-compose-mongoose";
 import {safeResolvers} from "../../schema";
-import sessionModel from "../../../mongo/messages/sessionModel";
 import {fireAI} from "../../../ai/ai";
 
 let MessageTC;
 
-
-
-
 export default () => {
     if (!MessageTC) {
 
-        const Pair = pairModel();
         const Message = messageModel();
-        const Session = sessionModel();
 
         const getTriplets = async (userPhone: string, sessionId: string) => {
             const messages = await Message.find({sessionId: sessionId});
@@ -46,31 +39,6 @@ export default () => {
         } catch (e) {
             MessageTC = composeWithMongoose(Message, {resolvers: safeResolvers, name: "newmessage"});
         }
-
-        MessageTC.addResolver({
-            name: 'getsessions',
-            type: '[String]',
-            args: {pairId: 'String!'},
-            resolve: async ({context, args}) => {
-                if (!context.user) throw new Error("Please sign in first");
-                if (!args.pairId) throw new Error("Please provide pair id");
-                const pair = await Pair.findById(args.pairId);
-                const sessions = await Session.find({pairId: pair._id});
-                return sessions.map(session => session._id.toString());
-            }
-        });
-
-        MessageTC.addResolver({
-            name: 'createsession',
-            type: 'String',
-            args: {pairId: 'String!'},
-            resolve: async ({context, args}) => {
-                if (!context.user) throw new Error("Please sign in first");
-                if (!args.pairId) throw new Error("Please provide pair id");
-                const newSession = new Session({pairId: args.pairId});
-                return (await newSession.save())._id.toString();
-            }
-        });
 
 
         MessageTC.addResolver({
