@@ -16,7 +16,7 @@ export default () => {
         try {
             UserTC = composeWithMongoose(User);
         } catch (e) {
-            UserTC = composeWithMongoose(User, {resolvers: safeResolvers, name:"newuser"});
+            UserTC = composeWithMongoose(User, {resolvers: safeResolvers, name: "newuser"});
         }
 
         UserTC.addResolver({
@@ -30,11 +30,11 @@ export default () => {
                 if (!args.phone) throw new Error("Phone number is required");
                 if (args.phone[0] === '+') args.phone = args.phone.substring(1, args.phone.length)
                 const newCode = new Code({
-                    user: (await User.findOne({phone: args.phone}) || await (new User({phone: args.phone })).save())._id,
+                    user: (await User.findOne({phone: args.phone}) || await (new User({phone: args.phone})).save())._id,
                     code: Math.floor(100000 + Math.random() * 900000)
                 });
                 await newCode.save();
-                await sendSMS(args.phone, `Your code is: ${newCode.code}. It will expire in 1 hour. You can also use this link to sign in: Login at https://scailean.com/login?code=${newCode.code}`);
+                await sendSMS(args.phone, `Your code is: ${newCode.code}. It will expire in 1 hour. You can also use this link to sign in: Login at https://scailean.com/login?code=${newCode.code}&phone=${args.phone}`);
                 return "good";
             }
         });
