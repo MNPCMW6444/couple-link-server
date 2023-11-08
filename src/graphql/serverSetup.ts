@@ -24,7 +24,7 @@ export default async () => {
     const app = express();
     app.use(cors({
         credentials: true,
-        origin: settings.env === "prod" ? ["https://scailean.com"] : ['http://localhost:5173', "https://studio.apollographql.com"]
+        origin: [settings.clientDomain, ...(settings.env === "prod" ? [] : ["https://studio.apollographql.com"])]
     }));
     app.use(cookieParser());
     const server = new ApolloServer({
