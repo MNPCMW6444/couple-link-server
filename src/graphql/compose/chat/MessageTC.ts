@@ -2,6 +2,7 @@ import messageModel from "../../../mongo/messages/messageModel";
 import {composeWithMongoose} from "graphql-compose-mongoose";
 import {safeResolvers} from "../../schema";
 import {fireAI} from "../../../ai/ai";
+import pushModel from "../../../mongo/messages/pushModel";
 
 let MessageTC;
 
@@ -77,6 +78,28 @@ export default () => {
                 return "good";
             }
         });
+
+
+        MessageTC.addResolver({
+            name: 'subscribeToPush',
+            type: 'Boolean',
+            args: {
+                subscription: 'JSON!'
+            },
+            resolve: async ({ context, args }) => {
+                if (!context.user) throw new Error("Please sign in first");
+
+                const subscription = new (pushModel())({
+                    userId: context.user._id,
+                    subscription: args.subscription
+                });
+
+                await subscription.save();
+
+                return true;
+            }
+        });
+
 
     }
 
