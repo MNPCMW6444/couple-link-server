@@ -61,6 +61,7 @@ export default () => {
         sendmessage: Message.getResolver('sendmessage'),
         createsession: Session.getResolver('createsession'),
         renamesession: Session.getResolver('renamesession'),
+        subscribeToPush: Message.getResolver('subscribeToPush'),
     });
 
 
