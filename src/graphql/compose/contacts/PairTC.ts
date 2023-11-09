@@ -101,19 +101,13 @@ export default () => {
             resolve: async ({args, context}) => {
                 if (!args.phone) throw new Error("The phone of initiator to agree is required");
                 if (!context.user) throw new Error("You are not signed in");
-                const pairs = await Pair.find();
-                let matchedPair = null;
-                for (let pair of pairs) {
-                    const person = await User.findOne({_id: pair.initiator});
-                    if (person && person.phone === args.phone) {
-                        matchedPair = pair;
-                        break;
-                    }
-                }
-                if (!matchedPair) throw new Error("No pair found for the provided initiator phone");
-                if (matchedPair.acceptor.toString() === context.user._id.toString()) {
-                    matchedPair.active = true;
-                    await matchedPair.save();
+                const initiator = await User.findOne({phone: args.phone});
+                const pair = await Pair.findOne({acceptor: context.user._id, initiator: initiator._id});
+                if (!pair) throw new Error("No pair found for the provided initiator phone");
+                console.log(pair.acceptor.toString(), context.user._id.toString())
+                if (pair.acceptor.toString() === context.user._id.toString()) {
+                    pair.active = true;
+                    await pair.save();
                     return "good";
                 }
                 throw new Error("Bad ownership");

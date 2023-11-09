@@ -7,8 +7,7 @@ import pairModel from "../../mongo/contacts/pairModel";
 import userModel from "../../mongo/auth/userModel";
 
 export default () => {
-    const Message = messageModel();
-    Message.watch().on("change", async (event) => {
+    messageModel().watch().on("change", async (event) => {
         event.operationType === "insert" &&
         await pubsub.publish("newMessage", {newMessage: event.fullDocument});
         const sessionId = event.fullDocument.sessionId;
@@ -18,10 +17,8 @@ export default () => {
         const side2 = pair.acceptor.toString()
         const side1Subscription = await pushModel().findOne({ userId: side1});
         const side2Subscription = await pushModel().findOne({ userId: side2});
-        console.log("side1Subscription", side1Subscription);
-        console.log("side2Subscription", side2Subscription);
-        side1Subscription && event.fullDocument.ownerid !== side1 && sendPushNotification(side1Subscription.subscription, {title:"new message from "+event.fullDocument.ownerid==="ai"? "Dual Chat GPT" : (await (userModel().findById(side2))).phone, body:event.fullDocument.message}).then();
-        side2Subscription && event.fullDocument.ownerid !== side2 && sendPushNotification(side1Subscription.subscription, {title:"new message from "+event.fullDocument.ownerid==="ai"? "Dual Chat GPT" : (await (userModel().findById(side1))).phone, body:event.fullDocument.message}).then();
+        side1Subscription && event.fullDocument.ownerid !== side1 && sendPushNotification(side1Subscription.subscription, {title:"New Message From"+event.fullDocument.ownerid==="ai"? "Dual Chat GPT" : (await (userModel().findById(side2))).phone, body:event.fullDocument.message}).then();
+        side2Subscription && event.fullDocument.ownerid !== side2 && sendPushNotification(side1Subscription.subscription, {title:"New Message From"+event.fullDocument.ownerid==="ai"? "Dual Chat GPT" : (await (userModel().findById(side1))).phone, body:event.fullDocument.message}).then();
     })
 
     const Session = sessionModel();

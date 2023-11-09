@@ -82,6 +82,22 @@ export default () => {
                 return payload.newSession;
             },
         },
+        newInvitation: {
+            type: Pair,
+            description: 'Subscribe to new invitations',
+            subscribe: () => pubsub.asyncIterator('newInvitation'),
+            resolve: (payload) => {
+                return payload.newInvitation;
+            },
+        },
+        invitationAccepted: {
+            type: Pair,
+            description: 'Subscribe to invitations acceptences',
+            subscribe: () => pubsub.asyncIterator('newInvitation'),
+            resolve: (payload) => {
+                return payload.newInvitation;
+            },
+        },
     });
 
     console.log('Schema composer initialized.');
