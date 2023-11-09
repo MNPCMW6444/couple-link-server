@@ -15,7 +15,7 @@ webpush.setVapidDetails(
 
 export const sendPushNotification = async (subscription:any, payload:{ title: string, body: string }) => {
     try {
-        await webpush.sendNotification(subscription, payload || JSON.stringify(payload));
+        await webpush.sendNotification(subscription, JSON.stringify(payload));
         console.log('Notification sent successfully.');
     } catch (error) {
         console.error('Error sending notification:', error);
