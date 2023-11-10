@@ -2,6 +2,8 @@ import OpenAI from "openai";
 import settings from "../settings";
 import messageModel from "../mongo/messages/messageModel";
 import roleModel from "../mongo/rnd/roleModel";
+import setModel from "../mongo/rnd/setModel";
+import {ChatCompletionMessageParam} from "openai/resources";
 
 const ROLE = "You are a mediator between Side 1 and Side 2. Provide unbiased insights based on both parties' views. As a relationship consultant, offer perspectives to enhance mutual understanding. Keep responses concise, unless elaboration is needed for clarity.";
 
@@ -83,43 +85,50 @@ export const fireAI = async (sessionId: string) => {
 };
 
 
-export const createRole = async (creatorId: string, role: string, messageOneExample = "My boyfriend doesn't prioritise me over his friends and work. I feel like I'm at the bottom of his priority list. He his also very cold and accuse me for being too needy 😭", messageTwoExample = "She exaggerates and thinks she is last on the list but she is only second after drinking coffee with friends once in the morning", category: string, description: string) => {
+
+
+export const createRole = async (creatorId, role, setId = null, category, description) => {
     const openai = new OpenAI({
         apiKey: settings.openAIAPIKey
     });
-    const chat = []
-    chat.push({role: "user", content: `Side 1: ${messageOneExample}\n\nSide 2: ${messageTwoExample}\n`});
-    const roleDoc = new (roleModel())({
-        creatorId,
-        role,
-        messageOneExample,
-        messageTwoExample,
-        category,
-        description,
-        aiMessage: "Still running...",
-    });
-    const saved = await roleDoc.save();
-    try {
-        const completion = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
-            messages: [
-                {
-                    role: "system",
-                    content: role,
-                },
-                ...chat]
+
+    let aiResponses = [];
+    let roleDoc;
+
+    if (setId) {
+        const set = await setModel().findById(setId);
+        const stringifiedArray = JSON.parse(set.stringifiedArray);
+
+        for (let pair of stringifiedArray) {
+            const chat: ChatCompletionMessageParam[] = [
+                { role: "system", content: role },
+                { role: "user", content: `Side 1: ${pair.side1}\n\nSide 2: ${pair.side2}\n` }
+            ];
+
+            try {
+                const completion = await openai.chat.completions.create({
+                    model: "gpt-3.5-turbo",
+                    messages: chat
+                });
+                aiResponses.push(completion.choices[0].message?.content);
+            } catch (e) {
+                aiResponses.push(`Error: ${JSON.stringify(e)}`);
+            }
+        }
+
+        roleDoc = new (roleModel())({
+            creatorId,
+            role,
+            setId,
+            category,
+            description,
+            aiMessage: JSON.stringify(aiResponses),
         });
-        const example = (completion).choices[0].message?.content;
-        const reread = await roleModel().findById(saved._id);
-        reread.aiMessage = example;
-        await reread.save();
-        const r = await roleDoc.save();
-        return r._id.toString()
-    } catch (e) {
-        const reread = await roleModel().findById(saved._id);
-        reread.aiMessage = JSON.stringify(e);
-        await reread.save();
-        const r = await roleDoc.save();
-        return r._id.toString()
+    } else {
+        // Handle the case where no setId is provided
+        // Your existing logic for default messages and role document creation
     }
-}
+
+    const saved = await roleDoc.save();
+    return saved._id.toString();
+};

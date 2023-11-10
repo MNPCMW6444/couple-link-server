@@ -13,11 +13,15 @@ const roleModel = new mongoose.Schema(
         },
         messageOneExample: {
             type: String,
-            required: true,
+            required: false,
         },
         messageTwoExample: {
             type: String,
-            required: true,
+            required: false,
+        },
+        setId: {
+            type: String,
+            required: false,
         },
         category: {
             type: String,
