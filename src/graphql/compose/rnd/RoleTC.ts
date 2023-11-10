@@ -2,12 +2,14 @@ import {composeWithMongoose} from 'graphql-compose-mongoose';
 import {safeResolvers} from "../../schema";
 import roleModel from "../../../mongo/rnd/roleModel";
 import {createRole} from "../../../ai/ai";
+import setModel from "../../../mongo/rnd/setModel";
 
 let RoleTC;
 
 export default () => {
     if (!RoleTC) {
         const Role = roleModel();
+        const Set = setModel();
         try {
             RoleTC = composeWithMongoose(Role);
         } catch (e) {
@@ -28,14 +30,13 @@ export default () => {
             type: 'String',
             args: {
                 role: 'String!',
-                messageOneExample: 'String',
-                messageTwoExample: 'String',
+                name: 'String',
                 category: 'String!',
                 description: 'String!'
             },
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                return "added: " + await createRole(context.user._id.toString(), args.role, args.messageOneExample, args.messageTwoExample, args.category, args.description);
+                return "added: " + await createRole(context.user._id.toString(), args.role, (await Set.findOne({name: args.name}))._id.toString(), args.category, args.description);
             }
         });
 

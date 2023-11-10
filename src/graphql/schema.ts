@@ -56,6 +56,7 @@ export default () => {
         getsessions: Session.getResolver('getsessions'),
         getmyroles: Role.getResolver('getmyroles'),
         getmysets: Set.getResolver('getmysets'),
+        getsetname: Set.getResolver('getsetname')
     });
 
     schemaComposer.Mutation.addFields({
