@@ -1,8 +1,9 @@
 import OpenAI from "openai";
 import settings from "../settings";
 import messageModel from "../mongo/messages/messageModel";
+import roleModel from "../mongo/rnd/roleModel";
 
-const ROLE = "You are a mediator between Side 1 and Side 2. Provide unbiased insights based on both parties' views. As a relationship consultant, offer perspectives to enhance mutual understanding. Keep responses concise, unless elaboration is needed for clarity.";
+const ROLE = "You are a mediator between Side 1 and Side 2. Provide unbiased insights based on both parties' views. As a relationship consultant, offer perspectives to enhance mutual understanding. Keep responses concise, unless elaboration is needed for clarity.Also provide practical advice for each side to improve the relationship and ensure both sides are satisfied with the outcomes   ";
 
 export const fireAI = async (sessionId: string) => {
     const openai = new OpenAI({
@@ -69,12 +70,45 @@ export const fireAI = async (sessionId: string) => {
         }*/
 
 
-    const aiMessage = new (messageModel())({sessionId, owner: "ai", ownerid:"ai", message: (completion).choices[0].message?.content});
+    const aiMessage = new (messageModel())({
+        sessionId,
+        owner: "ai",
+        ownerid: "ai",
+        message: (completion).choices[0].message?.content
+    });
     await aiMessage.save();
 
 
     return {price};
-
 };
 
 
+export const createRole = async (role: string) => {
+    const openai = new OpenAI({
+        apiKey: settings.openAIAPIKey
+    });
+
+    let me = "My boyfriend doesn't prioritise me over his friends and work. I feel like I'm at the bottom of his priority list. He his also very cold and accuse me for being too needy 😭",
+        other = "She exaggerates and thinks she is last on the list but she is only second after drinking coffee with friends once in the morning";
+    const chat = []
+
+    chat.push({role: "user", content: `Side 1: ${me}\n\nSide 2: ${other}\n`});
+
+
+    const completion = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+            {
+                role: "system",
+                content: ROLE,
+            },
+            ...chat]
+    });
+
+    const example = (completion).choices[0].message?.content;
+
+    const roleDoc = new (roleModel())({role: role, example: example});
+
+    const r = await roleDoc.save();
+    return r._id.toString()
+}
