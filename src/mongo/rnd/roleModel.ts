@@ -3,11 +3,27 @@ import mongoose from "mongoose";
 
 const roleModel = new mongoose.Schema(
     {
-        role: {
+        creatorId: {
             type: String,
             required: true,
         },
-        example: {
+        theRole: {
+            type: String,
+            required: true,
+        },
+        messageOneExample: {
+            type: String,
+            required: true,
+        },
+        messageTwoExample: {
+            type: String,
+            required: true,
+        },
+        category: {
+            type: String,
+            required: true,
+        },
+        description: {
             type: String,
             required: true,
         },

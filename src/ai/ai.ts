@@ -83,7 +83,7 @@ export const fireAI = async (sessionId: string) => {
 };
 
 
-export const createRole = async (role: string) => {
+export const createRole = async (creatorID: string, role: string, messageOneExample: string, messageTwoExample: string) => {
     const openai = new OpenAI({
         apiKey: settings.openAIAPIKey
     });
@@ -107,7 +107,7 @@ export const createRole = async (role: string) => {
 
     const example = (completion).choices[0].message?.content;
 
-    const roleDoc = new (roleModel())({role: role, example: example});
+    const roleDoc = new (roleModel())({creatorID, role, messageOneExample, messageTwoExample, example});
 
     const r = await roleDoc.save();
     return r._id.toString()
