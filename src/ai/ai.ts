@@ -112,7 +112,7 @@ export const createRole = async (creatorID: string, role: string, messageOneExam
         role,
         messageOneExample,
         messageTwoExample,
-        example,
+        aiMessage:example,
         category,
         description
     });
