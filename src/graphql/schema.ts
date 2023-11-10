@@ -52,7 +52,7 @@ export default () => {
         getinvitations: Pair.getResolver('getinvitations'),
         gettriplets: Message.getResolver('gettriplets'),
         getsessions :Session.getResolver('getsessions'),
-        getroles :Role.getResolver('getroles'),
+        getmyroles :Role.getResolver('getmyroles'),
     });
 
     schemaComposer.Mutation.addFields({
@@ -66,6 +66,7 @@ export default () => {
         renamesession: Session.getResolver('renamesession'),
         subscribeToPush: Message.getResolver('subscribeToPush'),
         addrole: Role.getResolver('addrole'),
+        publishrole: Role.getResolver('publishrole'),
     });
 
 

@@ -7,7 +7,7 @@ const roleModel = new mongoose.Schema(
             type: String,
             required: true,
         },
-        theRole: {
+        role: {
             type: String,
             required: true,
         },
@@ -26,6 +26,10 @@ const roleModel = new mongoose.Schema(
         description: {
             type: String,
             required: true,
+        },
+        visibility: {
+            type: Boolean,
+            default: false,
         },
     },
     {
