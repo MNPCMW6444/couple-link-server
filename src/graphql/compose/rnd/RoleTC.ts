@@ -18,7 +18,7 @@ export default () => {
         }
 
         RoleTC.addResolver({
-            name: 'getrole',
+            name: 'getroles',
             type: [RoleTC],
             args: {},
             resolve: async ({context}) => {
@@ -29,7 +29,7 @@ export default () => {
         });
 
         RoleTC.addResolver({
-            name: 'addRole',
+            name: 'addrole',
             type: 'String',
             args: {
                 role: 'String!'

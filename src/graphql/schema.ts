@@ -5,6 +5,7 @@ import MessageTC from "./compose/chat/MessageTC";
 import SessionTC from "./compose/chat/SessionTC";
 import {AllResolversOpts} from "graphql-compose-mongoose";
 import {pubsub} from "./serverSetup";
+import RoleTC from "./compose/rnd/RoleTC";
 
 
 export const safeResolvers: AllResolversOpts = {
@@ -38,9 +39,10 @@ export default () => {
     const Pair = PairTC && PairTC();
     const Message = MessageTC && MessageTC();
     const Session = SessionTC && SessionTC();
+    const Role = RoleTC() && RoleTC();
 
 
-    if (!User || !Pair || !Message || !Session) {
+    if (!User || !Pair || !Message || !Session|| !Role) {
         return null;
     }
 
@@ -50,6 +52,7 @@ export default () => {
         getinvitations: Pair.getResolver('getinvitations'),
         gettriplets: Message.getResolver('gettriplets'),
         getsessions :Session.getResolver('getsessions'),
+        getroles :Role.getResolver('getroles'),
     });
 
     schemaComposer.Mutation.addFields({
@@ -62,6 +65,7 @@ export default () => {
         createsession: Session.getResolver('createsession'),
         renamesession: Session.getResolver('renamesession'),
         subscribeToPush: Message.getResolver('subscribeToPush'),
+        addrole: Role.getResolver('addrole'),
     });
 
 
