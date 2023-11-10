@@ -87,27 +87,18 @@ export const createRole = async (creatorId: string, role: string, messageOneExam
     const openai = new OpenAI({
         apiKey: settings.openAIAPIKey
     });
-
-    let me = messageOneExample,
-        other = messageTwoExample;
     const chat = []
-
-    chat.push({role: "user", content: `Side 1: ${me}\n\nSide 2: ${other}\n`});
-
+    chat.push({role: "user", content: `Side 1: ${messageOneExample}\n\nSide 2: ${messageTwoExample}\n`});
     const roleDoc = new (roleModel())({
         creatorId,
         role,
         messageOneExample,
         messageTwoExample,
-        // aiMessage: example,
         category,
         description
     });
     const saved = await roleDoc.save();
-
-
     try {
-
         const completion = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
             messages: [
@@ -118,15 +109,16 @@ export const createRole = async (creatorId: string, role: string, messageOneExam
                 ...chat]
         });
         const example = (completion).choices[0].message?.content;
-
         const reread = await roleModel().findById(saved._id);
         reread.aiMessage = example;
-
         await reread.save();
-
         const r = await roleDoc.save();
         return r._id.toString()
     } catch (e) {
-        console.log(e)
+        const reread = await roleModel().findById(saved._id);
+        reread.aiMessage = JSON.stringify(e);
+        await reread.save();
+        const r = await roleDoc.save();
+        return r._id.toString()
     }
 }
