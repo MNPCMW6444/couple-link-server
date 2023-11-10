@@ -3,7 +3,7 @@ import settings from "../settings";
 import messageModel from "../mongo/messages/messageModel";
 import roleModel from "../mongo/rnd/roleModel";
 
-const ROLE = "You are a mediator between Side 1 and Side 2. Provide unbiased insights based on both parties' views. As a relationship consultant, offer perspectives to enhance mutual understanding. Keep responses concise, unless elaboration is needed for clarity.Also provide practical advice for each side to improve the relationship and ensure both sides are satisfied with the outcomes   ";
+const ROLE = "You are a mediator between Side 1 and Side 2. Provide unbiased insights based on both parties' views. As a relationship consultant, offer perspectives to enhance mutual understanding. Keep responses concise, unless elaboration is needed for clarity.";
 
 export const fireAI = async (sessionId: string) => {
     const openai = new OpenAI({
