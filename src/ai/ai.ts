@@ -94,6 +94,18 @@ export const createRole = async (creatorId: string, role: string, messageOneExam
 
     chat.push({role: "user", content: `Side 1: ${me}\n\nSide 2: ${other}\n`});
 
+    const roleDoc = new (roleModel())({
+        creatorId,
+        role,
+        messageOneExample,
+        messageTwoExample,
+        // aiMessage: example,
+        category,
+        description
+    });
+    const saved = await roleDoc.save();
+
+
     try {
 
         const completion = await openai.chat.completions.create({
@@ -107,15 +119,10 @@ export const createRole = async (creatorId: string, role: string, messageOneExam
         });
         const example = (completion).choices[0].message?.content;
 
-        const roleDoc = new (roleModel())({
-            creatorId,
-            role,
-            messageOneExample,
-            messageTwoExample,
-            aiMessage: example,
-            category,
-            description
-        });
+        const reread = await roleModel().findById(saved._id);
+        reread.aiMessage = example;
+
+        await reread.save();
 
         const r = await roleDoc.save();
         return r._id.toString()
