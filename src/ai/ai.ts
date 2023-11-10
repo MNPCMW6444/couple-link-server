@@ -83,7 +83,7 @@ export const fireAI = async (sessionId: string) => {
 };
 
 
-export const createRole = async (creatorID: string, role: string, messageOneExample = "My boyfriend doesn't prioritise me over his friends and work. I feel like I'm at the bottom of his priority list. He his also very cold and accuse me for being too needy 😭", messageTwoExample = "She exaggerates and thinks she is last on the list but she is only second after drinking coffee with friends once in the morning", category: string, description: string) => {
+export const createRole = async (creatorId: string, role: string, messageOneExample = "My boyfriend doesn't prioritise me over his friends and work. I feel like I'm at the bottom of his priority list. He his also very cold and accuse me for being too needy 😭", messageTwoExample = "She exaggerates and thinks she is last on the list but she is only second after drinking coffee with friends once in the morning", category: string, description: string) => {
     const openai = new OpenAI({
         apiKey: settings.openAIAPIKey
     });
@@ -94,29 +94,32 @@ export const createRole = async (creatorID: string, role: string, messageOneExam
 
     chat.push({role: "user", content: `Side 1: ${me}\n\nSide 2: ${other}\n`});
 
+    try {
 
-    const completion = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [
-            {
-                role: "system",
-                content: role,
-            },
-            ...chat]
-    });
+        const completion = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [
+                {
+                    role: "system",
+                    content: role,
+                },
+                ...chat]
+        });
+        const example = (completion).choices[0].message?.content;
 
-    const example = (completion).choices[0].message?.content;
+        const roleDoc = new (roleModel())({
+            creatorId,
+            role,
+            messageOneExample,
+            messageTwoExample,
+            aiMessage: example,
+            category,
+            description
+        });
 
-    const roleDoc = new (roleModel())({
-        creatorID,
-        role,
-        messageOneExample,
-        messageTwoExample,
-        aiMessage:example,
-        category,
-        description
-    });
-
-    const r = await roleDoc.save();
-    return r._id.toString()
+        const r = await roleDoc.save();
+        return r._id.toString()
+    } catch (e) {
+        console.log(e)
+    }
 }
