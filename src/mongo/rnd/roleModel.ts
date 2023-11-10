@@ -27,6 +27,10 @@ const roleModel = new mongoose.Schema(
             type: String,
             required: true,
         },
+        aiMessage: {
+            type: String,
+            required: true,
+        },
         visibility: {
             type: Boolean,
             default: false,
