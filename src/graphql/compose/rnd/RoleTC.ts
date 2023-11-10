@@ -22,7 +22,7 @@ export default () => {
             type: [RoleTC],
             args: {},
             resolve: async ({context}) => {
-                if (!context.user || (!(context.user.phone !== "972528971871" && context.user.phone !== "972527820055"))) throw new Error("Please sign in first");
+                if (!context.user || (!(context.user.phone === "972528971871" || context.user.phone === "972527820055"))) throw new Error("Please sign in first");
                 return Role.find();
             }
 
@@ -35,7 +35,7 @@ export default () => {
                 role: 'String!'
             },
             resolve: async ({context, args}) => {
-                if (!context.user || (!(context.user.phone !== "972528971871" && context.user.phone !== "972527820055"))) throw new Error("Please sign in first");
+                if (!context.user || (!(context.user.phone === "972528971871" || context.user.phone === "972527820055"))) throw new Error("Please sign in first");
                 return "added: " + await createRole(args.role);
             }
 

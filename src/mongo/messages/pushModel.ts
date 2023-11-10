@@ -20,5 +20,5 @@ const pushModel = new mongoose.Schema(
 
 export default () => {
     if (!connection) throw new Error("Database not initialized");
-    return connection.model("psuh", pushModel);
+    return connection.model("push", pushModel);
 };
