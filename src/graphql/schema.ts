@@ -1,4 +1,4 @@
-import { SchemaComposer} from 'graphql-compose';
+import {SchemaComposer} from 'graphql-compose';
 import UserTC from './compose/user-auth/UserTC';
 import PairTC from "./compose/contacts/PairTC";
 import MessageTC from "./compose/chat/MessageTC";
@@ -6,6 +6,7 @@ import SessionTC from "./compose/chat/SessionTC";
 import {AllResolversOpts} from "graphql-compose-mongoose";
 import {pubsub} from "./serverSetup";
 import RoleTC from "./compose/rnd/RoleTC";
+import SetTC from "./compose/rnd/SetTC";
 
 
 export const safeResolvers: AllResolversOpts = {
@@ -40,9 +41,10 @@ export default () => {
     const Message = MessageTC && MessageTC();
     const Session = SessionTC && SessionTC();
     const Role = RoleTC() && RoleTC();
+    const Set = SetTC() && SetTC();
 
 
-    if (!User || !Pair || !Message || !Session|| !Role) {
+    if (!User || !Pair || !Message || !Session || !Role || !Set) {
         return null;
     }
 
@@ -51,8 +53,9 @@ export default () => {
         getcontacts: Pair.getResolver('getcontacts'),
         getinvitations: Pair.getResolver('getinvitations'),
         gettriplets: Message.getResolver('gettriplets'),
-        getsessions :Session.getResolver('getsessions'),
-        getmyroles :Role.getResolver('getmyroles'),
+        getsessions: Session.getResolver('getsessions'),
+        getmyroles: Role.getResolver('getmyroles'),
+        getmysets: Set.getResolver('getmysets'),
     });
 
     schemaComposer.Mutation.addFields({
@@ -66,7 +69,9 @@ export default () => {
         renamesession: Session.getResolver('renamesession'),
         subscribeToPush: Message.getResolver('subscribeToPush'),
         addrole: Role.getResolver('addrole'),
+        addset: Set.getResolver('addset'),
         publishrole: Role.getResolver('publishrole'),
+        publishset: Set.getResolver('publishset'),
     });
 
 

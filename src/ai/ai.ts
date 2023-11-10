@@ -95,7 +95,8 @@ export const createRole = async (creatorId: string, role: string, messageOneExam
         messageOneExample,
         messageTwoExample,
         category,
-        description
+        description,
+        aiMessage: "Still running...",
     });
     const saved = await roleDoc.save();
     try {
