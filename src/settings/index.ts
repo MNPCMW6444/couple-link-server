@@ -11,7 +11,7 @@ const settings = process.env.NODE_ENV === "production" ? {
     smsService: process.env.SMS_SERVICE!,
     env: process.env.WHITE_ENV!,
     openAIAPIKey : process.env.OPEN_AI_API_KEY!,
-    clientDomain : "https://scailean.com",
+    clientDomain : "https://dualchatgpt.com",
     pushPrivate : process.env.PUSH_PRIVATE!,
 } : process.env.NODE_ENV === "development" ? {
     mongoURI: process.env.MONGO_URI || "mongodb://localhost:27017",
