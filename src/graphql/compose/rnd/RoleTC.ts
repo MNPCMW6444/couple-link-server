@@ -36,7 +36,10 @@ export default () => {
             },
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                return "added: " + await createRole(context.user._id.toString(), args.role, (await Set.findOne({name: args.name}))._id.toString(), args.category, args.description);
+                console.log(args.name);
+                const setID = (await Set.findOne({name: args.name}))?._id?.toString();
+                if (!setID) throw new Error("Set name not found, be exact");
+                return "added: " + await createRole(context.user._id.toString(), args.role, setID, args.category, args.description);
             }
         });
 
