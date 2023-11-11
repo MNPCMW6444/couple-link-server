@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 const pushModel = new mongoose.Schema(
     {
         userId: {type: String, required: true},
+        deviceName: {type: String, required: true, ubique: true},
         subscription: {
             endpoint: {type: String, required: true},
             keys: {

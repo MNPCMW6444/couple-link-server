@@ -7,6 +7,7 @@ import {AllResolversOpts} from "graphql-compose-mongoose";
 import {pubsub} from "./serverSetup";
 import RoleTC from "./compose/rnd/RoleTC";
 import SetTC from "./compose/rnd/SetTC";
+import PushTC from "./compose/push/pushTC";
 
 
 export const safeResolvers: AllResolversOpts = {
@@ -42,9 +43,10 @@ export default () => {
     const Session = SessionTC && SessionTC();
     const Role = RoleTC() && RoleTC();
     const Set = SetTC() && SetTC();
+    const Push = PushTC() && PushTC();
 
 
-    if (!User || !Pair || !Message || !Session || !Role || !Set) {
+    if (!User || !Pair || !Message || !Session || !Role || !Set || !Push) {
         return null;
     }
 
@@ -52,11 +54,12 @@ export default () => {
         getme: User.getResolver('getme'),
         getcontacts: Pair.getResolver('getcontacts'),
         getinvitations: Pair.getResolver('getinvitations'),
-        gettriplets: Message.getResolver('gettriplets'),
         getsessions: Session.getResolver('getsessions'),
-        getmyroles: Role.getResolver('getmyroles'),
+        gettriplets: Message.getResolver('gettriplets'),
+        getpushes: Push.getResolver('getpushes'),
         getmysets: Set.getResolver('getmysets'),
-        getsetname: Set.getResolver('getsetname')
+        getsetname: Set.getResolver('getsetname'),
+        getmyroles: Role.getResolver('getmyroles'),
     });
 
     schemaComposer.Mutation.addFields({
@@ -65,34 +68,19 @@ export default () => {
         signout: User.getResolver('signout'),
         newpair: Pair.getResolver('newpair'),
         agreepair: Pair.getResolver('agreepair'),
-        sendmessage: Message.getResolver('sendmessage'),
         createsession: Session.getResolver('createsession'),
         renamesession: Session.getResolver('renamesession'),
-        subscribeToPush: Message.getResolver('subscribeToPush'),
-        addrole: Role.getResolver('addrole'),
+        sendmessage: Message.getResolver('sendmessage'),
+        subscribeToPush: Push.getResolver('subscribeToPush'),
+        deletepush: Push.getResolver('deletepush'),
         addset: Set.getResolver('addset'),
-        publishrole: Role.getResolver('publishrole'),
         publishset: Set.getResolver('publishset'),
+        addrole: Role.getResolver('addrole'),
+        publishrole: Role.getResolver('publishrole'),
     });
 
 
     schemaComposer.Subscription.addFields({
-        newMessage: {
-            type: Message,
-            description: 'Subscribe to new messages',
-            subscribe: () => pubsub.asyncIterator('newMessage'),
-            resolve: (payload) => {
-                return payload.newMessage;
-            },
-        },
-        newSession: {
-            type: Session,
-            description: 'Subscribe to new sessions',
-            subscribe: () => pubsub.asyncIterator('newSession'),
-            resolve: (payload) => {
-                return payload.newSession;
-            },
-        },
         newInvitation: {
             type: Pair,
             description: 'Subscribe to new invitations',
@@ -107,6 +95,22 @@ export default () => {
             subscribe: () => pubsub.asyncIterator('newInvitation'),
             resolve: (payload) => {
                 return payload.newInvitation;
+            },
+        },
+        newSession: {
+            type: Session,
+            description: 'Subscribe to new sessions',
+            subscribe: () => pubsub.asyncIterator('newSession'),
+            resolve: (payload) => {
+                return payload.newSession;
+            },
+        },
+        newMessage: {
+            type: Message,
+            description: 'Subscribe to new messages',
+            subscribe: () => pubsub.asyncIterator('newMessage'),
+            resolve: (payload) => {
+                return payload.newMessage;
             },
         },
     });
