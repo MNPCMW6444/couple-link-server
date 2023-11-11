@@ -32,7 +32,7 @@ export default () => {
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
                 if (!args.id) throw new Error("Please give id");
-                return (await Set.findById(context.args.id)).name;
+                return (await Set.findById(args.id)).name;
             }
         });
 
