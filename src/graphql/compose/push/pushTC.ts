@@ -13,7 +13,7 @@ export default () => {
         try {
             PushTC = composeWithMongoose(Push);
         } catch (e) {
-            PushTC = composeWithMongoose(Push, {resolvers: safeResolvers, name: "newpair"});
+            PushTC = composeWithMongoose(Push, {resolvers: safeResolvers, name: "newpush"});
         }
         PushTC.addResolver({
             name: 'getpushes',
