@@ -36,8 +36,8 @@ export default () => {
             },
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                if (!context.deviceName) throw new Error("Please give name");
-                if (!context.subscription) throw new Error("error getting sub");
+                if (!args.deviceName) throw new Error("Please give name");
+                if (!args.subscription) throw new Error("error getting sub");
                 const subscription = new Push({
                     userId: context.user._id,
                     subscription: args.subscription,
@@ -59,7 +59,7 @@ export default () => {
                 if (!args.pushName) throw new Error("Please give name");
                 await Push.findOneAndRemove({
                     userId: context.user._id,
-                    name: args.pushName
+                    deviceName: args.pushName
                 });
                 return "removed";
             }
