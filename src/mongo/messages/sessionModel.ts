@@ -7,6 +7,10 @@ const sessionModel = new mongoose.Schema(
             type: String,
             required: true,
         },
+        roleId:{
+            type: String,
+            required: true,
+        },
         name: {
             type: String,
         },

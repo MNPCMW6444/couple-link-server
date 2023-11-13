@@ -30,7 +30,9 @@ export default () => {
             type: 'String',
             args: {
                 role: 'String!',
-                name: 'String',
+                name: 'String!',
+                roleName: 'String!',
+                publicName: 'String',
                 category: 'String!',
                 description: 'String!'
             },
@@ -39,7 +41,7 @@ export default () => {
                 console.log(args.name);
                 const setID = (await Set.findOne({name: args.name}))?._id?.toString();
                 if (!setID) throw new Error("Set name not found, be exact");
-                return "added: " + await createRole(context.user._id.toString(), args.role, setID, args.category, args.description);
+                return "added: " + await createRole(context.user._id.toString(), args.roleName,args.publicName,args.role, setID, args.category, args.description);
             }
         });
 

@@ -33,11 +33,11 @@ export default () => {
         SessionTC.addResolver({
             name: 'createsession',
             type: SessionTC,
-            args: {pairId: 'String!', sessionName: 'String!'},
+            args: {pairId: 'String!', sessionName: 'String!',role: 'String!'},
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
                 if (!args.pairId) throw new Error("Please provide pair id");
-                const newSession = new Session({pairId: args.pairId, name:args.sessionName});
+                const newSession = new Session({pairId: args.pairId,role:args.role, name:args.sessionName});
                 return newSession.save();
             }
         });

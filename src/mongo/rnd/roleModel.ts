@@ -7,6 +7,13 @@ const roleModel = new mongoose.Schema(
             type: String,
             required: true,
         },
+        name: {
+            type: String,
+            required: true,
+        },
+        publicName: {
+            type: String,
+        },
         role: {
             type: String,
             required: true,

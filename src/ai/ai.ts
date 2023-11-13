@@ -85,9 +85,7 @@ export const fireAI = async (sessionId: string) => {
 };
 
 
-
-
-export const createRole = async (creatorId, role, setId = null, category, description) => {
+export const createRole = async (creatorId, name, publicName, role, setId = null, category, description) => {
     const openai = new OpenAI({
         apiKey: settings.openAIAPIKey
     });
@@ -101,8 +99,8 @@ export const createRole = async (creatorId, role, setId = null, category, descri
 
         for (let pair of stringifiedArray) {
             const chat: ChatCompletionMessageParam[] = [
-                { role: "system", content: role },
-                { role: "user", content: `Side 1: ${pair.side1}\n\nSide 2: ${pair.side2}\n` }
+                {role: "system", content: role},
+                {role: "user", content: `Side 1: ${pair.side1}\n\nSide 2: ${pair.side2}\n`}
             ];
 
             try {
@@ -116,14 +114,22 @@ export const createRole = async (creatorId, role, setId = null, category, descri
             }
         }
 
-        roleDoc = new (roleModel())({
+        const pro = {
             creatorId,
             role,
             setId,
+            name,
             category,
             description,
             aiMessage: JSON.stringify(aiResponses),
-        });
+        };
+
+        roleDoc = new (roleModel())(publicName ? {
+                    ...pro,
+                    publicName,
+                }
+                : {...pro}
+        );
     } else {
         // Handle the case where no setId is provided
         // Your existing logic for default messages and role document creation
