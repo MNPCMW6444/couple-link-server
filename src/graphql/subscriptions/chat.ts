@@ -17,8 +17,14 @@ export default () => {
         const side2 = pair.acceptor.toString()
         const side1Subscription = await pushModel().findOne({ userId: side1});
         const side2Subscription = await pushModel().findOne({ userId: side2});
-        side1Subscription && event.fullDocument.ownerid !== side1 && sendPushNotification(side1Subscription.subscription, {title:"New Message From"+event.fullDocument.ownerid==="ai"? "Dual Chat GPT" : (await (userModel().findById(side2))).phone, body:event.fullDocument.message}).then();
-        side2Subscription && event.fullDocument.ownerid !== side2 && sendPushNotification(side1Subscription.subscription, {title:"New Message From"+event.fullDocument.ownerid==="ai"? "Dual Chat GPT" : (await (userModel().findById(side1))).phone, body:event.fullDocument.message}).then();
+        side1Subscription && event.fullDocument.ownerid !== side1 && sendPushNotification(side1Subscription.subscription, {title:"New Message From"+event.fullDocument.ownerid==="ai"? "Dual Chat GPT" : (await (userModel().findById(side2))).phone, body:event.fullDocument.message}, {
+            pairId: session.pairId,
+            sessionId:  sessionId
+        }).then();
+        side2Subscription && event.fullDocument.ownerid !== side2 && sendPushNotification(side1Subscription.subscription, {title:"New Message From"+event.fullDocument.ownerid==="ai"? "Dual Chat GPT" : (await (userModel().findById(side1))).phone, body:event.fullDocument.message},{
+            pairId: session.pairId,
+            sessionId:  sessionId
+        }).then();
     })
 
     const Session = sessionModel();

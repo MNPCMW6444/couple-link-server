@@ -13,9 +13,9 @@ webpush.setVapidDetails(
     vapidKeys.privateKey
 );
 
-export const sendPushNotification = async (subscription:any, payload:{ title: string, body: string }) => {
+export const sendPushNotification = async (subscription:any, payload:{ title: string, body: string }, data = {}) => {
     try {
-        await webpush.sendNotification(subscription, JSON.stringify(payload));
+        await webpush.sendNotification(subscription, JSON.stringify({...payload, ...data}));
         console.log('Notification sent successfully.');
     } catch (error) {
         console.error('Error sending notification:', error);
