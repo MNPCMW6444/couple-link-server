@@ -30,7 +30,7 @@ export default () => {
             type: 'String',
             args: {
                 role: 'String!',
-                name: 'String!',
+                setName: 'String!',
                 roleName: 'String!',
                 publicName: 'String',
                 category: 'String!',
@@ -38,8 +38,7 @@ export default () => {
             },
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                console.log(args.name);
-                const setID = (await Set.findOne({name: args.name}))?._id?.toString();
+                const setID = (await Set.findOne({name: args.setName}))?._id?.toString();
                 if (!setID) throw new Error("Set name not found, be exact");
                 return "added: " + await createRole(context.user._id.toString(), args.roleName,args.publicName,args.role, setID, args.category, args.description);
             }

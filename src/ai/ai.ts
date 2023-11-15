@@ -4,13 +4,17 @@ import messageModel from "../mongo/messages/messageModel";
 import roleModel from "../mongo/rnd/roleModel";
 import setModel from "../mongo/rnd/setModel";
 import {ChatCompletionMessageParam} from "openai/resources";
+import SessionModel from "../mongo/messages/sessionModel";
 
-const ROLE = "You are a mediator between Side 1 and Side 2. Provide unbiased insights based on both parties' views. As a relationship consultant, offer perspectives to enhance mutual understanding. Keep responses concise, unless elaboration is needed for clarity.";
+const DEFAULT_ROLE = "You are a mediator between Side 1 and Side 2. Provide unbiased insights based on both parties' views. As a relationship consultant, offer perspectives to enhance mutual understanding. Keep responses concise, unless elaboration is needed for clarity.";
 
 export const fireAI = async (sessionId: string) => {
     const openai = new OpenAI({
         apiKey: settings.openAIAPIKey
     });
+
+    const session = await SessionModel().findById(sessionId)
+    const role = session.roleId === "null" ? (await roleModel().findById(session.roleId)).role : DEFAULT_ROLE;
 
     const messages = await messageModel().find({sessionId: sessionId});
     let me = "", other = "", ai = "";
@@ -44,7 +48,7 @@ export const fireAI = async (sessionId: string) => {
         messages: [
             {
                 role: "system",
-                content: ROLE,
+                content: role,
             },
             ...chat]
     });
