@@ -24,24 +24,34 @@ export default () => {
 
         PairTC.addResolver({
             name: 'getcontacts',
-            type: '[String]',
+            type: '[JSON]', // Changed return type to JSON to accommodate objects
             args: {},
-            resolve: async ({context}) => {
+            resolve: async ({ context }) => {
                 if (!context.user) throw new Error("Please sign in first");
+
+                // Fetch pairs where the current user is either the initiator or the acceptor
                 const pairs = await Pair.find({
-                    $or: [{initiator: context.user._id}, {acceptor: context.user._id}],
+                    $or: [{ initiator: context.user._id }, { acceptor: context.user._id }],
                     active: true
                 });
+
+                // Extract contact user IDs from pairs
                 const contactIds = pairs.map(pair =>
                     pair.initiator.toString() === context.user._id.toString() ? pair.acceptor.toString() : pair.initiator.toString()
                 );
-                const users = await User.find({_id: {$in: contactIds}});
-                return users.map(({phone}, i) => JSON.stringify({
-                    phone, pairId: pairs[i]._id.toString()
-                }))
-            }
 
+                // Fetch user details of contacts
+                const users = await User.find({ _id: { $in: contactIds } });
+
+                // Map each user to an object containing phone, name, and pairId
+                return users.map(user => ({
+                    phone: user.phone,
+                    name: user.name, // Assuming 'name' field exists in the User model
+                    pairId: pairs.find(pair => pair.initiator.equals(user._id) || pair.acceptor.equals(user._id))._id.toString()
+                }));
+            }
         });
+
 
         PairTC.addResolver({
             name: 'getinvitations',
