@@ -77,6 +77,22 @@ export default () => {
         });
 
         UserTC.addResolver({
+            name: 'updateRND',
+            type: 'String',
+            args: {
+                rnd: 'String!'
+            },
+            resolve: async ({context, args}) => {
+                if (!context.user) throw new Error("You are not signed in");
+                if (!args.rnd) throw new Error("rnd is required");
+                context.user.rnd = args.rnd==="true";
+                console.log(context.user.rnd);
+                await context.user.save();
+                return "good";
+            }
+        });
+
+        UserTC.addResolver({
             name: 'signout',
             type: 'String',
             resolve: ({context}) => {

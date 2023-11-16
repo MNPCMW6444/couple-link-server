@@ -66,6 +66,7 @@ export default () => {
         signreq: User.getResolver('signreq'),
         signin: User.getResolver('signin'),
         signout: User.getResolver('signout'),
+        updateRND: User.getResolver('updateRND'),
         newpair: Pair.getResolver('newpair'),
         agreepair: Pair.getResolver('agreepair'),
         createsession: Session.getResolver('createsession'),

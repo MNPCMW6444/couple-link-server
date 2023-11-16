@@ -9,6 +9,7 @@ const userModel = new mongoose.Schema(
             unique: true,
         },
         passwordHash: {type: String, required: false},
+        rnd: {type: Boolean, required: false},
         name: {
             type: String,
             required: false,
