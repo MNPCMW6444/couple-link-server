@@ -14,7 +14,7 @@ export const fireAI = async (sessionId: string) => {
     });
 
     const session = await SessionModel().findById(sessionId)
-    const role = session.roleId === "null" ? (await roleModel().findById(session.roleId)).role : DEFAULT_ROLE;
+    const role = session.roleId === "null" ? DEFAULT_ROLE : (await roleModel().findById(session.roleId)).role;
 
     const messages = await messageModel().find({sessionId: sessionId});
     let me = "", other = "", ai = "";
