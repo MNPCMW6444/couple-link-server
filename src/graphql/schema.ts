@@ -69,6 +69,7 @@ export default () => {
         updateRND: User.getResolver('updateRND'),
         newpair: Pair.getResolver('newpair'),
         agreepair: Pair.getResolver('agreepair'),
+        setname: Pair.getResolver('setname'),
         createsession: Session.getResolver('createsession'),
         renamesession: Session.getResolver('renamesession'),
         sendmessage: Message.getResolver('sendmessage'),

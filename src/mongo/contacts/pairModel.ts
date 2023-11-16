@@ -3,15 +3,21 @@ import mongoose from "mongoose";
 
 const pairModel = new mongoose.Schema(
     {
-        initiator:{
+        initiator: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
+        },
+        initiatorName: {
+            type: String,
         },
         acceptor: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
         },
-        active:{type: Boolean, default: false},
+        acceptorName: {
+            type: String,
+        },
+        active: {type: Boolean, default: false},
     },
     {
         timestamps: true,

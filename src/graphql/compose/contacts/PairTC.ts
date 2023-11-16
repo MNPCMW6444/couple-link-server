@@ -113,6 +113,33 @@ export default () => {
                 throw new Error("Bad ownership");
             }
         });
+
+        PairTC.addResolver({
+            name: 'setname',
+            type: 'String',
+            args: {
+                pairId: 'String!',
+                name: 'String!'
+            },
+            resolve: async ({args, context}) => {
+                if (!args.name) throw new Error("The name to save is required");
+                if (!args.pairId) throw new Error("The pairId to edit is required");
+                if (!context.user) throw new Error("You are not signed in");
+                try{
+                    const pair = await Pair.findById(args.pairId);
+                    if (pair.acceptor.toString() === context.user._id.toString()) {
+                        pair.initiatorName = args.name;
+                    }
+                    else
+                        pair.acceptorName = args.name;
+                    await pair.save();
+                    return "good";
+                }
+                catch (e) {
+                    throw new Error("error");
+                }
+            }
+        });
     }
 
     return PairTC;
