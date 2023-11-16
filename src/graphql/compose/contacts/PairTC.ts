@@ -43,14 +43,21 @@ export default () => {
                 // Fetch user details of contacts
                 const users = await User.find({ _id: { $in: contactIds } });
 
-                // Map each user to an object containing phone, name, and pairId
-                return users.map(user => ({
-                    phone: user.phone,
-                    name: user.name, // Assuming 'name' field exists in the User model
-                    pairId: pairs.find(pair => pair.initiator.equals(user._id) || pair.acceptor.equals(user._id))._id.toString()
-                }));
+                // Map each pair to an object containing phone from User and name from Pair
+                return pairs.map(pair => {
+                    const isInitiator = pair.initiator.toString() === context.user._id.toString();
+                    const contactId = isInitiator ? pair.acceptor : pair.initiator;
+                    const contactUser = users.find(user => user._id.equals(contactId));
+
+                    return {
+                        phone: contactUser ? contactUser.phone : null,
+                        name: isInitiator ? pair.acceptorName : pair.initiatorName,
+                        pairId: pair._id.toString()
+                    };
+                });
             }
         });
+
 
 
         PairTC.addResolver({
