@@ -26,12 +26,12 @@ export default () => {
             name: 'getcontacts',
             type: '[JSON]', // Changed return type to JSON to accommodate objects
             args: {},
-            resolve: async ({ context }) => {
+            resolve: async ({context}) => {
                 if (!context.user) throw new Error("Please sign in first");
 
                 // Fetch pairs where the current user is either the initiator or the acceptor
                 const pairs = await Pair.find({
-                    $or: [{ initiator: context.user._id }, { acceptor: context.user._id }],
+                    $or: [{initiator: context.user._id}, {acceptor: context.user._id}],
                     active: true
                 });
 
@@ -41,7 +41,7 @@ export default () => {
                 );
 
                 // Fetch user details of contacts
-                const users = await User.find({ _id: { $in: contactIds } });
+                const users = await User.find({_id: {$in: contactIds}});
 
                 // Map each pair to an object containing phone from User and name from Pair
                 return pairs.map(pair => {
@@ -51,13 +51,12 @@ export default () => {
 
                     return {
                         phone: contactUser ? contactUser.phone : null,
-                        name: isInitiator ? pair.acceptorName : pair.initiatorName,
+                        name: (isInitiator ? pair.acceptorName : pair.initiatorName) || contactUser.name,
                         pairId: pair._id.toString()
                     };
                 });
             }
         });
-
 
 
         PairTC.addResolver({
@@ -142,17 +141,15 @@ export default () => {
                 if (!args.name) throw new Error("The name to save is required");
                 if (!args.pairId) throw new Error("The pairId to edit is required");
                 if (!context.user) throw new Error("You are not signed in");
-                try{
+                try {
                     const pair = await Pair.findById(args.pairId);
                     if (pair.acceptor.toString() === context.user._id.toString()) {
                         pair.initiatorName = args.name;
-                    }
-                    else
+                    } else
                         pair.acceptorName = args.name;
                     await pair.save();
                     return "good";
-                }
-                catch (e) {
+                } catch (e) {
                     throw new Error("error");
                 }
             }
