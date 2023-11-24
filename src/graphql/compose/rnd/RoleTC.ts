@@ -40,7 +40,7 @@ export default () => {
                 if (!context.user) throw new Error("Please sign in first");
                 const setID = (await Set.findOne({name: args.setName}))?._id?.toString();
                 if (!setID) throw new Error("Set name not found, be exact");
-                return "added: " + await createRole(context.user._id.toString(), args.roleName,args.publicName,args.role, setID, args.category, args.description);
+                return "added: " + await createRole(context.user._id.toString(), args.roleName, args.publicName, args.role, setID, args.category, args.description);
             }
         });
 
@@ -59,7 +59,14 @@ export default () => {
                 return "published";
             }
         });
+
+        RoleTC.addResolver({
+            name: "getPublicRoles",
+            type: [RoleTC],
+            args: {},
+            resolve: async () => Role.find({visibility: true})
+        });
     }
+
     return RoleTC;
-}
-;
+};

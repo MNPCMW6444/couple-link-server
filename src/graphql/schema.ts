@@ -59,6 +59,7 @@ export default () => {
         getpushes: Push.getResolver('getpushes'),
         getmysets: Set.getResolver('getmysets'),
         getsetname: Set.getResolver('getsetname'),
+        getPublicRoles: Role.getResolver('getPublicRoles'),
         getmyroles: Role.getResolver('getmyroles'),
     });
 
