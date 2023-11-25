@@ -1,4 +1,4 @@
-import {connection} from "../connection";
+import { connection } from "../connection";
 import mongoose from "mongoose";
 
 const roleModel = new mongoose.Schema(
@@ -22,9 +22,9 @@ const roleModel = new mongoose.Schema(
             type: String,
             required: false,
         },
-        category: {
-            type: String,
-            required: true,
+        attributes: {
+            type: Map,
+            of: mongoose.Schema.Types.Mixed
         },
         description: {
             type: String,
@@ -43,7 +43,6 @@ const roleModel = new mongoose.Schema(
         timestamps: true,
     }
 );
-
 
 export default () => {
     if (!connection) throw new Error("Database not initialized");

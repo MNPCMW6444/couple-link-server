@@ -33,14 +33,14 @@ export default () => {
                 setName: 'String!',
                 roleName: 'String!',
                 publicName: 'String',
-                category: 'String!',
+                attributes: 'JSON!', // Replace category with attributes
                 description: 'String!'
             },
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
                 const setID = (await Set.findOne({name: args.setName}))?._id?.toString();
                 if (!setID) throw new Error("Set name not found, be exact");
-                return "added: " + await createRole(context.user._id.toString(), args.roleName, args.publicName, args.role, setID, args.category, args.description);
+                return "added: " + await createRole(context.user._id.toString(), args.roleName, args.publicName, args.role, setID, args.attributes, args.description);
             }
         });
 
