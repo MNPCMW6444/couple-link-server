@@ -8,6 +8,7 @@ import {pubsub} from "./serverSetup";
 import RoleTC from "./compose/rnd/RoleTC";
 import SetTC from "./compose/rnd/SetTC";
 import PushTC from "./compose/push/pushTC";
+import LicTC from "./compose/shop/LicTC";
 
 
 export const safeResolvers: AllResolversOpts = {
@@ -44,9 +45,10 @@ export default () => {
     const Role = RoleTC() && RoleTC();
     const Set = SetTC() && SetTC();
     const Push = PushTC() && PushTC();
+    const Lic = LicTC() && LicTC();
 
 
-    if (!User || !Pair || !Message || !Session || !Role || !Set || !Push) {
+    if (!User || !Pair || !Message || !Session || !Role || !Set || !Push || !Lic) {
         return null;
     }
 
@@ -61,6 +63,7 @@ export default () => {
         getsetname: Set.getResolver('getsetname'),
         getPublicRoles: Role.getResolver('getPublicRoles'),
         getmyroles: Role.getResolver('getmyroles'),
+        geyMyInventory: Lic.getResolver('geyMyInventory'),
     });
 
     schemaComposer.Mutation.addFields({
@@ -80,6 +83,7 @@ export default () => {
         publishset: Set.getResolver('publishset'),
         addrole: Role.getResolver('addrole'),
         publishrole: Role.getResolver('publishrole'),
+        buy: Lic.getResolver('buy'),
     });
 
 
