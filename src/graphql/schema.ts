@@ -115,9 +115,12 @@ export default () => {
         newMessage: {
             type: Message,
             description: 'Subscribe to new messages',
+            args: {
+                sessionId: 'String',
+            },
             subscribe: () => pubsub.asyncIterator('newMessage'),
-            resolve: (payload) => {
-                return payload.newMessage;
+            resolve: (payload, args) => {
+                return payload.newMessage.sessionId === args.sessionId && payload.newMessage;
             },
         },
     });
