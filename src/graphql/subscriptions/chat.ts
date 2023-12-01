@@ -10,7 +10,8 @@ export default () => {
     messageModel().watch().on("change", async (event) => {
         event.operationType === "insert" &&
         await pubsub.publish("newMessage", {newMessage: event.fullDocument});
-        const sessionId = event.fullDocument.sessionId;
+        const sessionId = event.fullDocument?.sessionId;
+        if(sessionId){
         const session = await sessionModel().findById(sessionId);
         const pair = await pairModel().findById(session.pairId);
         const side1 = pair.initiator.toString()
@@ -24,7 +25,7 @@ export default () => {
         side2Subscription && event.fullDocument.ownerid !== side2 && sendPushNotification(side1Subscription.subscription, {title:"New Message From"+event.fullDocument.ownerid==="ai"? "Dual Chat GPT" : (await (userModel().findById(side1))).phone, body:event.fullDocument.message},{
             pairId: session.pairId,
             sessionId:  sessionId
-        }).then();
+        }).then();}
     })
 
     const Session = sessionModel();
