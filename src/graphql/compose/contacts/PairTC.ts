@@ -84,7 +84,8 @@ export default () => {
             name: 'newpair',
             type: 'String',
             args: {
-                contactPhone: 'String!'
+                contactPhone: 'String!',
+                name: 'String'
             },
             resolve: async ({args, context}) => {
                 if (!args.contactPhone) throw new Error("Phone number is required");
@@ -93,17 +94,15 @@ export default () => {
                 if (args.contactPhone[0] === '+') args.contactPhone = args.contactPhone.substring(1, args.contactPhone.length)
                 const contactID = (await User.findOne({phone: args.contactPhone})
                     || await (new User({phone: args.contactPhone})).save())._id;
-
                 const newCode = new Code({
                     user: contactID,
                     code: Math.floor(100000 + Math.random() * 900000)
                 });
-
                 await newCode.save();
                 await sendSMS(args.contactPhone, `You have been invited to chat with ${context.user.phone}. Login at ${settings.clientDomain}/login?code=${newCode.code}&phone=${args.contactPhone} to accept the invitation. The code will expire in 1 hour, but you can always get a new one to log in and review the invitation.`);
                 const newPair = new Pair({initiator: context.user._id, acceptor: contactID});
+                if (args.name) newPair.acceptorName = args.name;
                 await newPair.save();
-
                 return "good";
             }
         });
