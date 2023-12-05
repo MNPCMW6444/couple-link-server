@@ -14,6 +14,11 @@ const userModel = new mongoose.Schema(
             type: String,
             required: false,
         },
+        subscription: {
+            type: String,
+            required: true,
+            default: "free",
+        },
     },
     {
         timestamps: true,
