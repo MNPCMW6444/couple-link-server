@@ -13,6 +13,7 @@ const settings = process.env.NODE_ENV === "production" ? {
     openAIAPIKey : process.env.OPEN_AI_API_KEY!,
     clientDomain : "https://couple-link.com",
     pushPrivate : process.env.PUSH_PRIVATE!,
+    stripeSecret : process.env.STRIPE_SECRET!
 } : process.env.NODE_ENV === "development" ? {
     mongoURI: process.env.MONGO_URI || "mongodb://localhost:27017",
     jwtSecret: process.env.JWT_SECRET || "xxxx",
@@ -23,6 +24,7 @@ const settings = process.env.NODE_ENV === "production" ? {
     openAIAPIKey : process.env.OPEN_AI_API_KEY || "",
     clientDomain: 'http://localhost:5173',
     pushPrivate : process.env.PUSH_PRIVATE || "",
+    stripeSecret : process.env.STRIPE_SECRET || "",
 } : null;
 
 if (!settings) throw new Error("problem with NODE_ENV");

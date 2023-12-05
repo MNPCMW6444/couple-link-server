@@ -12,7 +12,7 @@ import {execute, subscribe} from 'graphql';
 //import {RedisPubSub} from "graphql-redis-subscriptions";
 import subscriptions from "./subscriptions";
 import {PubSub} from "graphql-subscriptions";
-
+import stripeHandler from "../stripe/index"
 
 //export const pubsub = new RedisPubSub();
 export const pubsub = new PubSub();
@@ -27,6 +27,9 @@ export default async () => {
         origin: [settings.clientDomain, ...(settings.env === "prod" ? [] : ["https://studio.apollographql.com"])]
     }));
     app.use(cookieParser());
+
+    app.post('/stripe',express.raw({type: 'application/json'}), stripeHandler);
+
     const server = new ApolloServer({
         schema: schemaX,
         context: async ({req, res}) => {
