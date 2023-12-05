@@ -5,6 +5,7 @@ import {sendSMS} from "../../../twillio";
 import jwt from "jsonwebtoken";
 import settings from "../../../settings";
 import {safeResolvers} from "../../schema";
+import eventModel from "../../../mongo/stripe/eventModel";
 
 let UserTC;
 
@@ -85,7 +86,7 @@ export default () => {
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("You are not signed in");
                 if (!args.rnd) throw new Error("rnd is required");
-                context.user.rnd = args.rnd==="true";
+                context.user.rnd = args.rnd === "true";
                 console.log(context.user.rnd);
                 await context.user.save();
                 return "good";
@@ -106,7 +107,24 @@ export default () => {
                 return "good";
             }
         });
+
+        UserTC.addResolver({
+            name: 'tryToActivate',
+            type: 'String',
+            args: {email: "String!"},
+            resolve: async ({context, args}) => {
+                if (!context.user) throw new Error("You are not signed in");
+                if (!args.email) throw new Error("Email is required");
+                const eventDocs = await eventModel().find();
+                const events = eventDocs.map(({event}) => JSON.parse(event));
+                const suc = events.some(({data}) => data?.object?.billing_details?.email === args.email);
+                if (!suc) throw new Error("Email not found");
+                context.user.email = args.email;
+                context.user.subscription = "paid";
+                await context.user.save();
+                return "good";
+            }
+        });
     }
     return UserTC;
 }
-;

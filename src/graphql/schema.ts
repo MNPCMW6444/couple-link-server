@@ -84,6 +84,7 @@ export default () => {
         addrole: Role.getResolver('addrole'),
         publishrole: Role.getResolver('publishrole'),
         buy: Lic.getResolver('buy'),
+        tryToActivate:User.getResolver('tryToActivate'),
     });
 
 
