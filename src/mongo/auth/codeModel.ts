@@ -1,6 +1,6 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
-import version from "mongoose-version";
+import version from "mongoose-versioned";
 
 const codeModel = new mongoose.Schema(
     {
