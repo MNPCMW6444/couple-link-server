@@ -17,11 +17,12 @@ export default () => {
             }).then();
         }
         if (event.operationType === "update") {
-            await pubsub.publish("invitationAccepted", {newPair: event.fullDocument});
-            const toNotify = event?.fullDocument?.initiator;
+            const doc = event?.fullDocument || (await ((pairModel()).findById(event?.documentKey?._id?.toString())))
+            await pubsub.publish("invitationAccepted", {newPair: doc});
+            const toNotify = doc.initiator;
             if (toNotify) {
                 const sub = await pushModel().findOne({userId: toNotify});
-                const acceptor = await userModel().findOne({_id: event.fullDocument.acceptor});
+                const acceptor = await userModel().findOne({_id: doc.acceptor});
                 sub && sendPushNotification(sub.subscription, {
                     title: "New Contact",
                     body: acceptor.phone + " has accepted your invitation"

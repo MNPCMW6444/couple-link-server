@@ -100,7 +100,7 @@ export default () => {
         invitationAccepted: {
             type: Pair,
             description: 'Subscribe to invitations acceptences',
-            subscribe: () => pubsub.asyncIterator('newInvitation'),
+            subscribe: () => pubsub.asyncIterator('invitationAccepted'),
             resolve: (payload) => {
                 return payload.newInvitation;
             },
