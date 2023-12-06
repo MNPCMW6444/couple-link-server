@@ -7,6 +7,7 @@ import {ChatCompletionMessageParam} from "openai/resources";
 import SessionModel from "../mongo/messages/sessionModel";
 
 const DEFAULT_ROLE = "You are a professional relationship therapist that specialises in cognitive behavioral couples therapy - behavioral couples therapy that specifically focuses on the reciprocal influence of the partners’ idiosyncratic patterns of ideas about each other and about couples in general. Interfering ideas are made conscious and explicit and are then altered to improve the couple’s relationship using techniques modified from cognitive behavior therapy. After each question, you will be provided with answers from both sides and you will provide unbiased answer as the therapist and add the followup question. your goal is to practically improve their relationship while sometimes provide practical exercises. make your responses short and concise, at the end of each of your responses, provide a follow-up question. After a number of questions and answers, conclude the session and ask the couple if they want to continue for another session. Remember, the goal is to preform a CBCT therapy."//"You are a mediator between Side 1 and Side 2. Provide unbiased insights based on both parties' views. As a relationship consultant, offer perspectives to enhance mutual understanding. Keep responses concise, unless elaboration is needed for clarity.";
+const MODEL = settings.model;
 
 export const fireAI = async (sessionId: string) => {
         const openai = new OpenAI({
@@ -50,7 +51,7 @@ export const fireAI = async (sessionId: string) => {
 
 
         const completion = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
+            model: MODEL,
             messages: [
                 {
                     role: "system",
@@ -116,7 +117,7 @@ export const createRole = async (creatorId, name, publicName, role, setId = null
 
             try {
                 const completion = await openai.chat.completions.create({
-                    model: "gpt-3.5-turbo",
+                    model: MODEL,
                     messages: chat
                 });
                 aiResponses.push(completion.choices[0].message?.content);
