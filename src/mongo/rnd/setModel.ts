@@ -1,5 +1,6 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
+import version from "mongoose-version";
 
 const srtModel = new mongoose.Schema(
     {
@@ -23,7 +24,7 @@ const srtModel = new mongoose.Schema(
     {
         timestamps: true,
     }
-);
+).plugin(version, {collection: 'sets_versions'});
 
 
 export default () => {

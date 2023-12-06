@@ -1,28 +1,30 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
+import version from "mongoose-version";
 
 const pairModel = new mongoose.Schema(
-    {
-        initiator: {
-            type: mongoose.Schema.Types.ObjectId,
-            required: true,
-        },
-        initiatorName: {
-            type: String,
-        },
-        acceptor: {
-            type: mongoose.Schema.Types.ObjectId,
-            required: true,
-        },
-        acceptorName: {
-            type: String,
-        },
-        active: {type: Boolean, default: false},
-    },
-    {
-        timestamps: true,
-    }
-);
+        {
+            initiator: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+            },
+            initiatorName: {
+                type: String,
+            },
+            acceptor: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+            },
+            acceptorName: {
+                type: String,
+            },
+            active: {type: Boolean, default: false},
+            archived: {type: Boolean, default: false},
+        }, {
+            timestamps: true,
+        }
+    ).plugin(version, {collection: 'pairs_versions'})
+;
 
 
 export default () => {

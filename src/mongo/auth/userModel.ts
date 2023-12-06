@@ -1,5 +1,7 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
+import version from "mongoose-version";
+
 
 const userModel = new mongoose.Schema(
     {
@@ -27,7 +29,7 @@ const userModel = new mongoose.Schema(
     {
         timestamps: true,
     }
-);
+).plugin(version, {collection: 'users_versions'});
 
 
 export default () => {

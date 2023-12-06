@@ -1,5 +1,6 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
+import version from "mongoose-version";
 
 const eventModel = new mongoose.Schema(
     {
@@ -11,7 +12,7 @@ const eventModel = new mongoose.Schema(
     {
         timestamps: true,
     }
-);
+).plugin(version, {collection: 'events_versions'});
 
 
 export default () => {

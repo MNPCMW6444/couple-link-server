@@ -1,5 +1,6 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
+import version from "mongoose-version";
 
 const messageModel = new mongoose.Schema(
     {
@@ -20,7 +21,7 @@ const messageModel = new mongoose.Schema(
     {
         timestamps: true,
     }
-);
+).plugin(version, {collection: 'messages_versions'});
 
 
 export default () => {

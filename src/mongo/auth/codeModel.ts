@@ -1,5 +1,6 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
+import version from "mongoose-version";
 
 const codeModel = new mongoose.Schema(
     {
@@ -15,7 +16,7 @@ const codeModel = new mongoose.Schema(
     {
         timestamps: true,
     }
-);
+).plugin(version, {collection: 'codes_versions'});
 
 
 export default () => {

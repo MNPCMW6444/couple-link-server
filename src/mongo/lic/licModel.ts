@@ -1,5 +1,6 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
+import version from "mongoose-version";
 
 const licModel = new mongoose.Schema(
     {
@@ -15,7 +16,7 @@ const licModel = new mongoose.Schema(
     {
         timestamps: true,
     }
-);
+).plugin(version, {collection: 'lics_versions'});
 
 
 export default () => {

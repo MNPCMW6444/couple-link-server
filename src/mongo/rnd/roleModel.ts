@@ -1,5 +1,6 @@
 import { connection } from "../connection";
 import mongoose from "mongoose";
+import version from "mongoose-version";
 
 const roleModel = new mongoose.Schema(
     {
@@ -42,7 +43,7 @@ const roleModel = new mongoose.Schema(
     {
         timestamps: true,
     }
-);
+).plugin(version, {collection: 'roles_versions'});
 
 export default () => {
     if (!connection) throw new Error("Database not initialized");
