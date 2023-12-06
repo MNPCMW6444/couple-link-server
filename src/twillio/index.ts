@@ -6,7 +6,7 @@ const client = twilio(settings.smsSid, settings.smsSecret);
 
 const sendSMS = async (to: string, body: string, cb = async () => {
 }) => {
-    return settings.env === "prod" ? client.messages
+    return settings.whiteEnv !== "local" ? client.messages
         .create({
             from: settings.smsService,
             to,
