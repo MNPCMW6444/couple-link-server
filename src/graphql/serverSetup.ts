@@ -24,7 +24,7 @@ export default async () => {
     const app = express();
     app.use(cors({
         credentials: true,
-        origin: [settings.clientDomain, ...(settings.env === "prod" ? [] : ["https://studio.apollographql.com"])]
+        origin: [settings.clientDomain, ...(settings.whiteEnv !== "local" ? [] : ["https://studio.apollographql.com"])]
     }));
     app.use(cookieParser());
 
@@ -45,7 +45,7 @@ export default async () => {
             const user = decoded ? await userModel().findById(decoded.id) : null;
             return {req, res, user: user || null, pubsub};
         },
-        introspection: settings.env === "local",
+        introspection: settings.whiteEnv === "local",
         persistedQueries: false,
         plugins: [{
             async serverWillStart() {

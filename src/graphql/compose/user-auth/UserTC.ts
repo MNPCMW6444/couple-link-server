@@ -63,9 +63,9 @@ export default () => {
 
                 res.cookie('jwt', token, {
                     httpOnly: true,
-                    secure: settings.env !== "local",
+                    secure: settings.whiteEnv !== "local",
                     maxAge: 24 * 60 * 60 * 1000,
-                    sameSite: settings.env !== "local" ? 'strict' : 'lax'
+                    sameSite: settings.whiteEnv !== "local" ? 'strict' : 'lax'
                 });
                 return "good";
             }
@@ -99,10 +99,10 @@ export default () => {
             resolve: ({context}) => {
                 context.res.cookie('jwt', null, {
                     httpOnly: true,
-                    secure: settings.env !== "local",
+                    secure: settings.whiteEnv !== "local",
                     maxAge: 24 * 60 * 60 * 1000,
                     expires: new Date(0),
-                    sameSite: settings.env !== "local" ? 'strict' : 'lax'
+                    sameSite: settings.whiteEnv !== "local" ? 'strict' : 'lax'
                 });
                 return "good";
             }
