@@ -46,6 +46,7 @@ export default async () => {
             return {req, res, user: user || null, pubsub};
         },
         introspection: settings.env === "local",
+        persistedQueries: false,
         plugins: [{
             async serverWillStart() {
                 return {};
