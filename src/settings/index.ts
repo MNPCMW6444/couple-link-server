@@ -11,10 +11,11 @@ const settings = process.env.NODE_ENV === "production" ? {
     smsService: process.env.SMS_SERVICE!,
     env: process.env.WHITE_ENV!,
     openAIAPIKey: process.env.OPEN_AI_API_KEY!,
-    clientDomain: process.env.CLIENT_DOMAIN || "https://couple-link.com",
+    clientDomain: process.env.CLIENT_DOMAIN || `https://${process.env.WHITE_ENV === "preprod" ? "pre." : ""}couple-link.com`,
     pushPrivate: process.env.PUSH_PRIVATE!,
     stripeSecret: process.env.STRIPE_SECRET!,
     model: process.env.MODEL || "gpt-4", // https://platform.openai.com/docs/models
+    whiteEnv: process.env.WHITE_ENV || "prod",
 } : process.env.NODE_ENV === "development" ? {
     mongoURI: process.env.MONGO_URI || "mongodb://localhost:27017",
     jwtSecret: process.env.JWT_SECRET || "xxxx",
@@ -27,6 +28,7 @@ const settings = process.env.NODE_ENV === "production" ? {
     pushPrivate: process.env.PUSH_PRIVATE || "",
     stripeSecret: process.env.STRIPE_SECRET || "",
     model: process.env.MODEL || "gpt-4", // https://platform.openai.com/docs/models
+    whiteEnv: process.env.WHITE_ENV || "preprod",
 } : null;
 
 if (!settings) throw new Error("problem with NODE_ENV");
