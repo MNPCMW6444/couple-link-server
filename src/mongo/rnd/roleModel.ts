@@ -43,7 +43,7 @@ const roleModel = new mongoose.Schema(
     {
         timestamps: true,
     }
-).plugin(version, {collection: 'roles_versions'});
+); //.plugin(version, {collection: 'roles_versions'});
 
 export default () => {
     if (!connection) throw new Error("Database not initialized");

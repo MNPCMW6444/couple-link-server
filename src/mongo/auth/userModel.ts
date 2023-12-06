@@ -28,7 +28,7 @@ const userModel = new mongoose.Schema(
     {
         timestamps: true,
     }
-).plugin(version, {collection: 'users_versions'});
+); //.plugin(version, {collection: 'users_versions'});
 
 
 export default () => {
