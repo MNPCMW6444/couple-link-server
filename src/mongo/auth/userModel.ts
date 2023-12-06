@@ -11,8 +11,7 @@ const userModel = new mongoose.Schema(
             unique: true,
         },
         email: {
-            type: String,
-            unique: true,
+            type: String
         },
         passwordHash: {type: String, required: false},
         rnd: {type: Boolean, required: false},
