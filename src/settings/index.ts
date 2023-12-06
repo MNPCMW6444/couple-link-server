@@ -10,7 +10,7 @@ const settings = process.env.NODE_ENV === "production" ? {
     smsSecret: process.env.SMS_SECRET!,
     smsService: process.env.SMS_SERVICE!,
     openAIAPIKey: process.env.OPEN_AI_API_KEY!,
-    clientDomain: process.env.CLIENT_DOMAIN || `https://${process.env.WHITE_ENV === "preprod" ? "pre." : ""}couple-link.com`,
+    clientDomain: `https://${process.env.WHITE_ENV === "preprod" ? "pre." : ""}couple-link.com`,
     pushPrivate: process.env.PUSH_PRIVATE!,
     stripeSecret: process.env.STRIPE_SECRET!,
     model: process.env.MODEL || "gpt-4", // https://platform.openai.com/docs/models
@@ -22,7 +22,7 @@ const settings = process.env.NODE_ENV === "production" ? {
     smsSecret: process.env.SMS_SECRET || "",
     smsService: process.env.SMS_SERVICE || "",
     openAIAPIKey: process.env.OPEN_AI_API_KEY || "",
-    clientDomain: process.env.CLIENT_DOMAIN || 'http://localhost:5173',
+    clientDomain: 'http://localhost:5173',
     pushPrivate: process.env.PUSH_PRIVATE || "",
     stripeSecret: process.env.STRIPE_SECRET || "",
     model: process.env.MODEL || "gpt-4", // https://platform.openai.com/docs/models
