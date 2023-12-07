@@ -1,28 +1,40 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
-import version from "mongoose-versioned";
+import updateVersioningPlugin from 'mongoose-update-versioning';
 
-const sessionModel = new mongoose.Schema(
-    {
-        pairId: {
-            type: String,
-            required: true,
-        },
-        roleId:{
-            type: String,
-            required: true,
-        },
-        name: {
-            type: String,
-        },
-    },
-    {
-        timestamps: true, autoIndex: true
-    }
-).plugin(version, {collection: 'sessions_versions',mongoose},);
 
 
 export default () => {
+
+    const sessionModel = new mongoose.Schema(
+        {
+            pairId: {
+                type: String,
+                required: true,
+            },
+            roleId:{
+                type: String,
+                required: true,
+            },
+            name: {
+                type: String,
+            },
+        },
+        {
+            timestamps: true,
+        }
+    ).plugin(updateVersioningPlugin);
+
+
+
     if (!connection) throw new Error("Database not initialized");
-    return connection.model("session", sessionModel);
+
+    let sessionModelR;
+    if (mongoose.models.user) {
+        sessionModelR = connection.model('user');
+    } else {
+        sessionModelR = connection.model('user', sessionModel);
+    }
+
+    return sessionModelR// connection.model("session", sessionModel);
 };

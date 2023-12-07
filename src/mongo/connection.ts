@@ -1,6 +1,5 @@
 import mongoose, { ConnectOptions } from "mongoose";
 import settings from "../settings";
-mongoose.Promise = require('bluebird');
 
 export let connection: mongoose.Connection | null = null;
 

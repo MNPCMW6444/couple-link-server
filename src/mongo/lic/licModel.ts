@@ -1,25 +1,37 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
-import version from "mongoose-versioned";
-
-const licModel = new mongoose.Schema(
-    {
-        userId: {
-            type: String,
-            required: true,
-        },
-        roleId: {
-            type: String,
-        },
-        active: {type: Boolean, default: true},
-    },
-    {
-        timestamps: true, autoIndex: true
-    }
-).plugin(version, {collection: 'lics_versions',mongoose},);
-
+import updateVersioningPlugin from 'mongoose-update-versioning';
 
 export default () => {
+
+
+    const licModel = new mongoose.Schema(
+        {
+            userId: {
+                type: String,
+                required: true,
+            },
+            roleId: {
+                type: String,
+            },
+            active: {type: Boolean, default: true},
+        },
+        {
+            timestamps: true,
+        }
+    ).plugin(updateVersioningPlugin);
+
+
+
+
     if (!connection) throw new Error("Database not initialized");
-    return connection.model("lic", licModel);
+
+    let licModelR;
+    if (mongoose.models.user) {
+        licModelR = connection.model('user');
+    } else {
+        licModelR = connection.model('user', licModel);
+    }
+
+    return licModelR// connection.model("lic", licModel);
 };

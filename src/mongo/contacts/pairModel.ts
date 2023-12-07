@@ -1,8 +1,11 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
-import version from "mongoose-versioned";
+import updateVersioningPlugin from 'mongoose-update-versioning';
 
-const pairModel = new mongoose.Schema(
+export default () => {
+
+
+    const pairModel = new mongoose.Schema(
         {
             initiator: {
                 type: mongoose.Schema.Types.ObjectId,
@@ -21,13 +24,20 @@ const pairModel = new mongoose.Schema(
             active: {type: Boolean, default: false},
             archived: {type: Boolean, default: false},
         }, {
-            timestamps: true, autoIndex: true
+            timestamps: true,
         }
-    ).plugin(version, {collection: 'pairs_versions'})
-;
+    ).plugin(updateVersioningPlugin);
 
 
-export default () => {
+
     if (!connection) throw new Error("Database not initialized");
-    return connection.model("pair", pairModel);
+
+    let pairModelR;
+    if (mongoose.models.user) {
+        pairModelR = connection.model('user');
+    } else {
+        pairModelR = connection.model('user', pairModel);
+    }
+
+    return pairModelR// connection.model("pair", pairModel);
 };
