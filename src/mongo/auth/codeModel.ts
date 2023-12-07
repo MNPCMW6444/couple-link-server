@@ -14,9 +14,9 @@ const codeModel = new mongoose.Schema(
         }
     },
     {
-        timestamps: true,
+        timestamps: true, autoIndex: true
     }
-).plugin(version, {collection: 'codes_versions'});
+)//.plugin(version, {collection: 'codes_versions',mongoose},);
 
 
 export default () => {

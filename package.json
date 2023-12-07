@@ -16,6 +16,7 @@
   "type": "module",
   "dependencies": {
     "apollo-server-express": "^3.13.0",
+    "bluebird": "^3.7.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
     "esbuild": "^0.19.8",

@@ -14,9 +14,9 @@ const licModel = new mongoose.Schema(
         active: {type: Boolean, default: true},
     },
     {
-        timestamps: true,
+        timestamps: true, autoIndex: true
     }
-).plugin(version, {collection: 'lics_versions'});
+)//.plugin(version, {collection: 'lics_versions',mongoose},);
 
 
 export default () => {
