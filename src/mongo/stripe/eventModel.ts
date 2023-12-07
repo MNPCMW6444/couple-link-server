@@ -23,7 +23,7 @@ export default () => {
     if (!connection) throw new Error("Database not initialized");
 
     let eventModelR;
-    if (mongoose.models.user) {
+    if (mongoose.models.event) {
         eventModelR = connection.model('event');
     } else {
         eventModelR = connection.model('event', eventModel);

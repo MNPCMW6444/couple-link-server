@@ -27,7 +27,7 @@ export default () => {
     if (!connection) throw new Error("Database not initialized");
 
     let licModelR;
-    if (mongoose.models.user) {
+    if (mongoose.models.lic) {
         licModelR = connection.model('lic');
     } else {
         licModelR = connection.model('lic', licModel);

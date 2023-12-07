@@ -33,7 +33,7 @@ export default () => {
     if (!connection) throw new Error("Database not initialized");
 
     let pairModelR;
-    if (mongoose.models.user) {
+    if (mongoose.models.pair) {
         pairModelR = connection.model('pair');
     } else {
         pairModelR = connection.model('pair', pairModel);

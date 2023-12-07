@@ -30,7 +30,7 @@ export default () => {
     if (!connection) throw new Error("Database not initialized");
 
     let sessionModelR;
-    if (mongoose.models.user) {
+    if (mongoose.models.session) {
         sessionModelR = connection.model('session');
     } else {
         sessionModelR = connection.model('session', sessionModel);
