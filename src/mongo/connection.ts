@@ -1,26 +1,19 @@
 import mongoose, { ConnectOptions } from "mongoose";
 import settings from "../settings";
+mongoose.Promise = require('bluebird');
 
 export let connection: mongoose.Connection | null = null;
 
-export const connect = async (cb = async()=>{}) => {
-  console.log("Trying to connect mongodb...");
-
-
-
-  connection =  mongoose.createConnection(
-    settings.mongoURI,
-    {
+export const connect = async () => {
+  try {
+    await mongoose.connect(settings.mongoURI, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
-    } as ConnectOptions
-  );
-
-  connection.on("error", console.error.bind(console, "mongo connection error:"));
-  connection.once("open", function () {
-    // we're connected!
+      useUnifiedTopology: true
+    } as ConnectOptions);
     console.log("Mongo DB connected successfully");
-      cb()
-  });
+  } catch (err) {
+    console.error("mongo connection error:" + err.message);
+    throw new Error(err);
+  }
 };
 

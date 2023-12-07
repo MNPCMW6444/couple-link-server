@@ -21,9 +21,9 @@ const pairModel = new mongoose.Schema(
             active: {type: Boolean, default: false},
             archived: {type: Boolean, default: false},
         }, {
-            timestamps: true,
+            timestamps: true, autoIndex: true
         }
-    ).plugin(version, {collection: 'pairs_versions'})
+    )//.plugin(version, {collection: 'pairs_versions'})
 ;
 
 

@@ -19,9 +19,9 @@ const messageModel = new mongoose.Schema(
         }
     },
     {
-        timestamps: true,
+        timestamps: true, autoIndex: true
     }
-).plugin(version, {collection: 'messages_versions'});
+)//.plugin(version, {collection: 'messages_versions',mongoose},);
 
 
 export default () => {
