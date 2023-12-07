@@ -1,6 +1,6 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
-import updateVersioningPlugin from 'mongoose-update-versioning';
+
 
 
 export default () => {
@@ -27,7 +27,7 @@ export default () => {
         {
             timestamps: true,
         }
-    ).plugin(updateVersioningPlugin);
+    );
 
 
 
