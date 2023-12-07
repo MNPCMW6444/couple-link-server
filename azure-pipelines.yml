@@ -3,7 +3,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- main
+- preprod
 
 resources:
 - repo: self
@@ -33,7 +33,7 @@ stages:
           - task: Docker@2
             inputs:
               command: 'build'
-              repository: 'braikup.azurecr.io/server'
+              repository: 'braikup.azurecr.io/preserver'
               dockerfile: '**/Dockerfile'
               buildContext: '$(Build.Repository.LocalPath)'
               arguments: ''
@@ -42,6 +42,6 @@ stages:
           - task: Docker@2
             inputs:
               command: 'push'
-              repository: 'braikup.azurecr.io/server'
+              repository: 'braikup.azurecr.io/preserver'
               tags: |
                 $(tag)
