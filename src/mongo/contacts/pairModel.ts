@@ -34,9 +34,9 @@ export default () => {
 
     let pairModelR;
     if (mongoose.models.user) {
-        pairModelR = connection.model('user');
+        pairModelR = connection.model('pair');
     } else {
-        pairModelR = connection.model('user', pairModel);
+        pairModelR = connection.model('pair', pairModel);
     }
 
     return pairModelR// connection.model("pair", pairModel);

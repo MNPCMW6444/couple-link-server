@@ -28,9 +28,9 @@ export default () => {
 
     let codeModelR;
     if (mongoose.models.user) {
-        codeModelR = connection.model('user');
+        codeModelR = connection.model('code');
     } else {
-        codeModelR = connection.model('user', codeModel);
+        codeModelR = connection.model('code', codeModel);
     }
 
     return codeModelR// connection.model("code", codeModel);

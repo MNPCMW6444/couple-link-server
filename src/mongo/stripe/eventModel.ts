@@ -24,9 +24,9 @@ export default () => {
 
     let eventModelR;
     if (mongoose.models.user) {
-        eventModelR = connection.model('user');
+        eventModelR = connection.model('event');
     } else {
-        eventModelR = connection.model('user', eventModel);
+        eventModelR = connection.model('event', eventModel);
     }
 
     return eventModelR//  connection.model("event", eventModel);

@@ -28,9 +28,9 @@ export default () => {
 
     let licModelR;
     if (mongoose.models.user) {
-        licModelR = connection.model('user');
+        licModelR = connection.model('lic');
     } else {
-        licModelR = connection.model('user', licModel);
+        licModelR = connection.model('lic', licModel);
     }
 
     return licModelR// connection.model("lic", licModel);
