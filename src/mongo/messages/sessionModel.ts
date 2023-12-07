@@ -19,7 +19,7 @@ const sessionModel = new mongoose.Schema(
     {
         timestamps: true,
     }
-); //.plugin(version, {collection: 'sessions_versions'});
+).plugin(version, {collection: 'sessions_versions'});
 
 
 export default () => {
