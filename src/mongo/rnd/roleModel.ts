@@ -55,9 +55,9 @@ export default () => {
 
     let roleModelR;
     if (mongoose.models.user) {
-        roleModelR = connection.model('user');
+        roleModelR = connection.model('role');
     } else {
-        roleModelR = connection.model('user', roleModel);
+        roleModelR = connection.model('role', roleModel);
     }
 
     return roleModelR//  connection.model("role", roleModel);

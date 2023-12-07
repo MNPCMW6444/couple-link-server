@@ -36,9 +36,9 @@ export default () => {
 
     let srtModelR;
     if (mongoose.models.user) {
-        srtModelR = connection.model('user');
+        srtModelR = connection.model('set');
     } else {
-        srtModelR = connection.model('user', srtModel);
+        srtModelR = connection.model('set', srtModel);
     }
 
     return srtModelR// connection.model("set", srtModel);

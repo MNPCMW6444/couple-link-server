@@ -31,9 +31,9 @@ export default () => {
 
     let sessionModelR;
     if (mongoose.models.user) {
-        sessionModelR = connection.model('user');
+        sessionModelR = connection.model('session');
     } else {
-        sessionModelR = connection.model('user', sessionModel);
+        sessionModelR = connection.model('session', sessionModel);
     }
 
     return sessionModelR// connection.model("session", sessionModel);

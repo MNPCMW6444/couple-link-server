@@ -28,9 +28,9 @@ export default () => {
 
     let pushModelR;
     if (mongoose.models.user) {
-        pushModelR = connection.model('user');
+        pushModelR = connection.model('push');
     } else {
-        pushModelR = connection.model('user', pushModel);
+        pushModelR = connection.model('push', pushModel);
     }
 
     return pushModelR// connection.model("push", pushModel);

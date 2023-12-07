@@ -32,9 +32,9 @@ export default () => {
 
     let messageModelR;
     if (mongoose.models.user) {
-        messageModelR = connection.model('user');
+        messageModelR = connection.model('message');
     } else {
-        messageModelR = connection.model('user', messageModel);
+        messageModelR = connection.model('message', messageModel);
     }
 
     return messageModelR// connection.model("message", messageModel);
