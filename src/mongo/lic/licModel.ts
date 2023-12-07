@@ -16,7 +16,7 @@ const licModel = new mongoose.Schema(
     {
         timestamps: true, autoIndex: true
     }
-)//.plugin(version, {collection: 'lics_versions',mongoose},);
+).plugin(version, {collection: 'lics_versions',mongoose},);
 
 
 export default () => {
