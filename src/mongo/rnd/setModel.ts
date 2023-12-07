@@ -35,7 +35,7 @@ export default () => {
     if (!connection) throw new Error("Database not initialized");
 
     let srtModelR;
-    if (mongoose.models.user) {
+    if (mongoose.models.set) {
         srtModelR = connection.model('set');
     } else {
         srtModelR = connection.model('set', srtModel);

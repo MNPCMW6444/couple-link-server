@@ -31,7 +31,7 @@ export default () => {
     if (!connection) throw new Error("Database not initialized");
 
     let messageModelR;
-    if (mongoose.models.user) {
+    if (mongoose.models.message) {
         messageModelR = connection.model('message');
     } else {
         messageModelR = connection.model('message', messageModel);

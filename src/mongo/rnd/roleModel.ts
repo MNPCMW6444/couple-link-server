@@ -54,7 +54,7 @@ export default () => {
     if (!connection) throw new Error("Database not initialized");
 
     let roleModelR;
-    if (mongoose.models.user) {
+    if (mongoose.models.role) {
         roleModelR = connection.model('role');
     } else {
         roleModelR = connection.model('role', roleModel);
