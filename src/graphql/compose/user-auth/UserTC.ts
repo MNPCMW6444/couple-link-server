@@ -32,10 +32,10 @@ export default () => {
                 if (args.phone[0] === '+') args.phone = args.phone.substring(1, args.phone.length)
                 const newCode = new Code({
                     user: (await User.findOne({phone: args.phone}) || await (new User({phone: args.phone})).save())._id,
-                    code: Math.floor(100000 + Math.random() * 900000)
+                    code: process.env.WHITE_ENV === "preprod" ? 123456 : Math.floor(100000 + Math.random() * 900000)
                 });
                 await newCode.save();
-                await sendSMS(args.phone, `Your code is: ${newCode.code}. It will expire in 1 hour. You can also use this link to sign in: Login at ${settings.clientDomain}/login?code=${newCode.code}&phone=${args.phone}`);
+                process.env.WHITE_ENV !== "preprod" && await sendSMS(args.phone, `Your code is: ${newCode.code}. It will expire in 1 hour. You can also use this link to sign in: Login at ${settings.clientDomain}/login?code=${newCode.code}&phone=${args.phone}`);
                 return "good";
             }
         });
