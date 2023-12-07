@@ -1,30 +1,41 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
-import version from "mongoose-versioned";
-
-const messageModel = new mongoose.Schema(
-    {
-        owner: {
-            type: String, // number || ai
-            required: true,
-        },
-        ownerid: {
-            type: String, // stringified id || ai
-            required: true,
-        },
-        sessionId: {type: String, required: true},
-        message: {
-            type: String,
-            required: true,
-        }
-    },
-    {
-        timestamps: true, autoIndex: true
-    }
-).plugin(version, {collection: 'messages_versions',mongoose},);
+import updateVersioningPlugin from 'mongoose-update-versioning';
 
 
 export default () => {
+
+
+    const messageModel = new mongoose.Schema(
+        {
+            owner: {
+                type: String, // number || ai
+                required: true,
+            },
+            ownerid: {
+                type: String, // stringified id || ai
+                required: true,
+            },
+            sessionId: {type: String, required: true},
+            message: {
+                type: String,
+                required: true,
+            }
+        },
+        {
+            timestamps: true,
+        }
+    ).plugin(updateVersioningPlugin);
+
+
     if (!connection) throw new Error("Database not initialized");
-    return connection.model("message", messageModel);
+
+    let messageModelR;
+    if (mongoose.models.user) {
+        messageModelR = connection.model('user');
+    } else {
+        messageModelR = connection.model('user', messageModel);
+    }
+
+    return messageModelR// connection.model("message", messageModel);
 };

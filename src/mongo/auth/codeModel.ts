@@ -1,25 +1,37 @@
 import {connection} from "../connection";
 import mongoose from "mongoose";
-import version from "mongoose-versioned";
+import updateVersioningPlugin from 'mongoose-update-versioning';
 
-const codeModel = new mongoose.Schema(
-    {
-        user:{
-            type: mongoose.Schema.Types.ObjectId,
-            required: true,
-        },
-        code: {
-            type: Number,
-            required: true,
-        }
-    },
-    {
-        timestamps: true, autoIndex: true
-    }
-).plugin(version, {collection: 'codes_versions',mongoose},);
+
 
 
 export default () => {
+
+    const codeModel = new mongoose.Schema(
+        {
+            user:{
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+            },
+            code: {
+                type: Number,
+                required: true,
+            }
+        },
+        {
+            timestamps: true,
+        }
+    ).plugin(updateVersioningPlugin);
+
+
     if (!connection) throw new Error("Database not initialized");
-    return connection.model("code", codeModel);
+
+    let codeModelR;
+    if (mongoose.models.user) {
+        codeModelR = connection.model('user');
+    } else {
+        codeModelR = connection.model('user', codeModel);
+    }
+
+    return codeModelR// connection.model("code", codeModel);
 };
