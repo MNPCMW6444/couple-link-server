@@ -12,7 +12,7 @@ const eventModel = new mongoose.Schema(
     {
         timestamps: true, autoIndex: true
     }
-)//.plugin(version, {collection: 'events_versions',mongoose},);
+).plugin(version, {collection: 'events_versions',mongoose},);
 
 
 export default () => {

@@ -23,7 +23,7 @@ const pairModel = new mongoose.Schema(
         }, {
             timestamps: true, autoIndex: true
         }
-    )//.plugin(version, {collection: 'pairs_versions'})
+    ).plugin(version, {collection: 'pairs_versions'})
 ;
 
 

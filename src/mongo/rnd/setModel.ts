@@ -24,7 +24,7 @@ const srtModel = new mongoose.Schema(
     {
         timestamps: true, autoIndex: true
     }
-)//.plugin(version, {collection: 'sets_versions',mongoose},);
+).plugin(version, {collection: 'sets_versions',mongoose},);
 
 
 export default () => {
