@@ -17,7 +17,7 @@ const pushModel = new mongoose.Schema(
     {
         timestamps: true,
     }
-); //.plugin(version, {collection: 'pushs_versions'});
+).plugin(version, {collection: 'pushs_versions'});
 
 
 export default () => {
