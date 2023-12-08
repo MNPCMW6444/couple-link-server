@@ -77,6 +77,7 @@ export default () => {
         deletePair: Pair.getResolver('deletePair'),
         createsession: Session.getResolver('createsession'),
         renamesession: Session.getResolver('renamesession'),
+        deleteSession: Session.getResolver('deleteSession'),
         sendmessage: Message.getResolver('sendmessage'),
         subscribeToPush: Push.getResolver('subscribeToPush'),
         deletepush: Push.getResolver('deletepush'),
