@@ -1,9 +1,11 @@
 import { connection } from "../connection";
-import mongoose from "mongoose";
+import mongoose from "mongoose";import versioning from "@mnpcmw6444/mongoose-auto-versioning";
 
 
 
 export default () => {
+
+    const name = "role"
 
     const roleModel = new mongoose.Schema(
         {
@@ -46,7 +48,7 @@ export default () => {
         {
             timestamps: true,
         }
-    );
+    ).plugin(versioning, {collection: name + "s.history", mongoose})
 
 
 
@@ -55,9 +57,9 @@ export default () => {
 
     let roleModelR;
     if (mongoose.models.role) {
-        roleModelR = connection.model('role');
+        roleModelR = connection.model(name);
     } else {
-        roleModelR = connection.model('role', roleModel);
+        roleModelR = connection.model(name, roleModel);
     }
 
     return roleModelR//  connection.model("role", roleModel);

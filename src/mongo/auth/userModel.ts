@@ -1,9 +1,11 @@
 import {connection} from "../connection";
-import mongoose from "mongoose";
-
+import mongoose from "mongoose"
+import versioning from "@mnpcmw6444/mongoose-auto-versioning";
 
 
 export default () => {
+
+    const name = "user"
 
     const userModel = new mongoose.Schema(
         {
@@ -30,17 +32,17 @@ export default () => {
         {
             timestamps: true,
         }
-    );
+    ).plugin(versioning, {collection: name + "s.history", mongoose})
 
 
     if (!connection) throw new Error("Database not initialized");
 
     let userModelR;
     if (mongoose.models.user) {
-        userModelR = connection.model('user');
+        userModelR = connection.model(name);
     } else {
-        userModelR = connection.model('user', userModel);
+        userModelR = connection.model(name, userModel);
     }
 
-    return userModelR// connection.model("user", userModel);
+    return userModelR;
 };

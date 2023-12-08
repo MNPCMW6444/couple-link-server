@@ -1,9 +1,11 @@
 import {connection} from "../connection";
-import mongoose from "mongoose";
+import mongoose from "mongoose";import versioning from "@mnpcmw6444/mongoose-auto-versioning";
 
 
 
 export default () => {
+
+    const name = "set"
 
     const srtModel = new mongoose.Schema(
         {
@@ -27,7 +29,7 @@ export default () => {
         {
             timestamps: true,
         }
-    );
+    ).plugin(versioning, {collection: name + "s.history", mongoose})
 
 
 
@@ -36,9 +38,9 @@ export default () => {
 
     let srtModelR;
     if (mongoose.models.set) {
-        srtModelR = connection.model('set');
+        srtModelR = connection.model(name);
     } else {
-        srtModelR = connection.model('set', srtModel);
+        srtModelR = connection.model(name, srtModel);
     }
 
     return srtModelR// connection.model("set", srtModel);

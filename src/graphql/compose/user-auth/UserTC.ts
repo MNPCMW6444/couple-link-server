@@ -87,7 +87,6 @@ export default () => {
                 if (!context.user) throw new Error("You are not signed in");
                 if (!args.rnd) throw new Error("rnd is required");
                 context.user.rnd = args.rnd === "true";
-                console.log(context.user.rnd);
                 await context.user.save();
                 return "good";
             }
