@@ -28,7 +28,7 @@ export default () => {
             },
             resolve: async ({args, context}) => {
                 if (context.user) throw new Error("You are already signed in");
-                if (!args.phone) throw new Error("Phone number is required");
+
                 if (args.phone[0] === '+') args.phone = args.phone.substring(1, args.phone.length)
                 const newCode = new Code({
                     user: (await User.findOne({phone: args.phone}) || await (new User({phone: args.phone})).save())._id,
@@ -49,7 +49,7 @@ export default () => {
             },
             resolve: async ({args, context}) => {
                 const {res} = context;
-                if (!args.phone) throw new Error("Phone number is required");
+
                 if (args.phone[0] === '+') args.phone = args.phone.substring(1, args.phone.length)
                 const user = await User.findOne({phone: args.phone});
                 const isValidCode = await Code.findOne({
@@ -85,7 +85,7 @@ export default () => {
             },
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("You are not signed in");
-                if (!args.rnd) throw new Error("rnd is required");
+
                 context.user.rnd = args.rnd === "true";
                 await context.user.save();
                 return "good";
@@ -113,7 +113,7 @@ export default () => {
             args: {email: "String!"},
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("You are not signed in");
-                if (!args.email) throw new Error("Email is required");
+
                 const eventDocs = await eventModel().find();
                 const events = eventDocs.map(({event}) => JSON.parse(event));
                 const suc = events.some(({data}) => data?.object?.billing_details?.email === args.email);

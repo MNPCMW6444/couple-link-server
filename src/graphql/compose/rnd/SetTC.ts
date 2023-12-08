@@ -31,7 +31,6 @@ export default () => {
             },
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                if (!args.id) throw new Error("Please give id");
                 return (await Set.findById(args.id)).name;
             }
         });
@@ -61,7 +60,6 @@ export default () => {
             },
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                if (!args.setId) throw new Error("What is the ID");
                 const set = await Set.findById(args.setId);
                 set.visibility = true;
                 await set.save()

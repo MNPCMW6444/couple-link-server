@@ -10,8 +10,6 @@ let PairTC;
 
 export default () => {
     if (!PairTC) {
-
-
         const User = userModel();
         const Code = codeModel();
         const Pair = pairModel();
@@ -58,7 +56,6 @@ export default () => {
             }
         });
 
-
         PairTC.addResolver({
             name: 'getinvitations',
             type: '[String]',
@@ -88,7 +85,7 @@ export default () => {
                 name: 'String'
             },
             resolve: async ({args, context}) => {
-                if (!args.contactPhone) throw new Error("Phone number is required");
+
                 if (!context.user) throw new Error("You are not signed in");
                 if (args.contactPhone === context.user.phone) throw new Error("You can't invite yourself");
                 if (args.contactPhone[0] === '+') args.contactPhone = args.contactPhone.substring(1, args.contactPhone.length)
@@ -114,12 +111,11 @@ export default () => {
                 phone: 'String!'
             },
             resolve: async ({args, context}) => {
-                if (!args.phone) throw new Error("The phone of initiator to agree is required");
+
                 if (!context.user) throw new Error("You are not signed in");
                 const initiator = await User.findOne({phone: args.phone});
                 const pair = await Pair.findOne({acceptor: context.user._id, initiator: initiator._id});
                 if (!pair) throw new Error("No pair found for the provided initiator phone");
-                console.log(pair.acceptor.toString(), context.user._id.toString())
                 if (pair.acceptor.toString() === context.user._id.toString()) {
                     pair.active = true;
                     await pair.save();
@@ -137,8 +133,8 @@ export default () => {
                 name: 'String!'
             },
             resolve: async ({args, context}) => {
-                if (!args.name) throw new Error("The name to save is required");
-                if (!args.pairId) throw new Error("The pairId to edit is required");
+
+
                 if (!context.user) throw new Error("You are not signed in");
                 try {
                     const pair = await Pair.findById(args.pairId);
@@ -151,6 +147,36 @@ export default () => {
                 } catch (e) {
                     throw new Error("error");
                 }
+            }
+        });
+
+        PairTC.addResolver({
+            name: 'deletePair',
+            type: 'String',
+            args: {
+                pairId: 'String!',
+                permanently: 'Boolean!'
+            },
+            resolve: async ({args, context}) => {
+                if (!context.user) throw new Error("You are not signed in");
+                let pair;
+                try {
+                    pair = await Pair.findById(args.pairId);
+                } catch {
+                    pair = await Pair.findOne({initiator: (await User.findOne({phone:args.pairId}))._id, acceptor: context.user._id});
+                }
+                if (!pair) throw new Error("No pair found for the provided pairId");
+                if (args.permanently) {
+                    await pair.deleteOne()
+                } else {
+                    pair.active = false;
+                    if (context.user._id.toString() !== pair.acceptor.toString()) {
+                        pair.initiator = pair.acceptor;
+                        pair.acceptor = context.user._id.toString();
+                    }
+                    await pair.save();
+                }
+                return "good";
             }
         });
     }
