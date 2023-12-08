@@ -24,7 +24,7 @@ export default () => {
             args: {pairId: 'String!'},
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                if (!args.pairId) throw new Error("Please provide pair id");
+
                 const pair = await Pair.findById(args.pairId);
                 return Session.find({pairId: pair._id});
             }
@@ -36,7 +36,7 @@ export default () => {
             args: {pairId: 'String!', sessionName: 'String!',role: 'String'},
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                if (!args.pairId) throw new Error("Please provide pair id");
+
                 const newSession = new Session({pairId: args.pairId,roleId:args.role || "null", name:args.sessionName});
                 return newSession.save();
             }
@@ -48,7 +48,6 @@ export default () => {
             args: { sessionId: 'String!', newName: 'String!' },
             resolve: async ({ context, args }) => {
                 if (!context.user) throw new Error("Please sign in first");
-                if (!args.sessionId || !args.newName) throw new Error("Session ID and new name are required");
 
                 const session = await Session.findById(args.sessionId);
                 if (!session) throw new Error("Session not found");

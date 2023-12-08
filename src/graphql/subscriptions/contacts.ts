@@ -16,7 +16,7 @@ export default () => {
                 body: initiator.phone + " has invited you"
             }).then();
         }
-        if (event.operationType === "update"&& event.updateDescription?.updatedFields?.active) {
+        if (event.operationType === "update" && event.updateDescription?.updatedFields?.active) {
             const doc = event?.fullDocument || (await ((pairModel()).findById(event?.documentKey?._id?.toString())))
             await pubsub.publish("invitationAccepted", {newPair: doc});
             const toNotify = doc.initiator;

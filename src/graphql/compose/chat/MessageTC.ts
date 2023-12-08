@@ -47,7 +47,7 @@ export default () => {
             args: {sessionId: 'String!'},
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                if (!args.sessionId) throw new Error("Please provide session id");
+
                 return getTriplets(context.user.phone, args.sessionId)
             }
         });
@@ -61,8 +61,8 @@ export default () => {
             },
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                if (!args.sessionId) throw new Error("Please provide session id");
-                if (!args.message) throw new Error("Please provide message");
+
+
                 let messages = await getTriplets(context.user.phone, args.sessionId);
                 if (messages[messages.length - 1][0] || (messages[messages.length - 1][0] && messages[messages.length - 1][1] && messages[messages.length - 1][2])) throw new Error("Please wait for your turn");
                 const newMessage = new Message({

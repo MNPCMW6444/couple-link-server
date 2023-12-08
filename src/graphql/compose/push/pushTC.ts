@@ -36,8 +36,8 @@ export default () => {
             },
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                if (!args.deviceName) throw new Error("Please give name");
-                if (!args.subscription) throw new Error("error getting sub");
+
+
                 const existing = await Push.find({ userId: context.user._id});
                 if (existing.some(doc => doc.deviceName === args.deviceName)) throw new Error("Name already exists");
                 const subscription = new Push({
@@ -58,7 +58,7 @@ export default () => {
             },
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                if (!args.pushName) throw new Error("Please give name");
+
                 await Push.findOneAndRemove({
                     userId: context.user._id,
                     deviceName: args.pushName

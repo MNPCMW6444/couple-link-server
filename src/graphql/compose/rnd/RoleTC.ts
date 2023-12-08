@@ -52,7 +52,6 @@ export default () => {
             },
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-                if (!args.roleId) throw new Error("What is the ID");
                 const role = await Role.findById(args.roleId);
                 role.visibility = true;
                 await role.save()

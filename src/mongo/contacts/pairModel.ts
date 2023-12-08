@@ -22,9 +22,7 @@ export default () => {
             acceptorName: {
                 type: String,
             },
-            active: {type: Boolean, default: false},
-            archived: {type: Boolean, default: false},
-        }, {
+            active: {type: Boolean, default: false},}, {
             timestamps: true,
         }
     ).plugin(versioning, {collection: name + "s.history", mongoose})
@@ -33,7 +31,7 @@ export default () => {
 
     if (!connection) throw new Error("Database not initialized");
 
-    let pairModelR;
+    let pairModelR: mongoose.Model<any, unknown, unknown, {}, any, any>;
     if (mongoose.models.pair) {
         pairModelR = connection.model(name);
     } else {
