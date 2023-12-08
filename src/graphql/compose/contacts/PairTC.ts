@@ -163,7 +163,9 @@ export default () => {
                 try {
                     pair = await Pair.findById(args.pairId);
                 } catch {
-                    pair = await Pair.findOne({initiator: (await User.findOne({phone:args.pairId}))._id, acceptor: context.user._id});
+                    const id1=(await User.findOne({phone:args.pairId}))._id
+                    const id2=context.user._id
+                    pair = await Pair.findOne({$or:[{ initiator: id1, acceptor:id2},{ initiator: id2, acceptor:id1}]});
                 }
                 if (!pair) throw new Error("No pair found for the provided pairId");
                 if (args.permanently) {
