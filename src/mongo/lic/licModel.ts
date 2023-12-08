@@ -1,9 +1,10 @@
 import {connection} from "../connection";
-import mongoose from "mongoose";
+import mongoose from "mongoose";import versioning from "@mnpcmw6444/mongoose-auto-versioning";
 
 
 export default () => {
 
+    const name = "lic"
 
     const licModel = new mongoose.Schema(
         {
@@ -19,7 +20,7 @@ export default () => {
         {
             timestamps: true,
         }
-    );
+    ).plugin(versioning, {collection: name + "s.history", mongoose})
 
 
 
@@ -28,9 +29,9 @@ export default () => {
 
     let licModelR;
     if (mongoose.models.lic) {
-        licModelR = connection.model('lic');
+        licModelR = connection.model(name);
     } else {
-        licModelR = connection.model('lic', licModel);
+        licModelR = connection.model(name, licModel);
     }
 
     return licModelR// connection.model("lic", licModel);

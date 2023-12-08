@@ -1,8 +1,9 @@
 import {connection} from "../connection";
-import mongoose from "mongoose";
+import mongoose from "mongoose";import versioning from "@mnpcmw6444/mongoose-auto-versioning";
 
 
 export default () => {
+    const name = "pair"
 
 
     const pairModel = new mongoose.Schema(
@@ -26,7 +27,7 @@ export default () => {
         }, {
             timestamps: true,
         }
-    );
+    ).plugin(versioning, {collection: name + "s.history", mongoose})
 
 
 
@@ -34,9 +35,9 @@ export default () => {
 
     let pairModelR;
     if (mongoose.models.pair) {
-        pairModelR = connection.model('pair');
+        pairModelR = connection.model(name);
     } else {
-        pairModelR = connection.model('pair', pairModel);
+        pairModelR = connection.model(name, pairModel);
     }
 
     return pairModelR// connection.model("pair", pairModel);

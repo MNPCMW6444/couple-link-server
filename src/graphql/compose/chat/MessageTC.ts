@@ -73,7 +73,7 @@ export default () => {
                 });
                 await newMessage.save();
                 messages = await getTriplets(context.user.phone, args.sessionId);
-                if (messages[messages.length - 1][0] && messages[messages.length - 1][1] && (!(messages[messages.length - 1][2]))) fireAI(args.sessionId).then(); else console.log("waiting for both sides")
+                if (messages[messages.length - 1][0] && messages[messages.length - 1][1] && (!(messages[messages.length - 1][2]))) fireAI(args.sessionId).then()
                 return "good";
             }
         });

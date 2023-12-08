@@ -1,10 +1,12 @@
 import {connection} from "../connection";
-import mongoose from "mongoose";
+import mongoose from "mongoose";import versioning from "@mnpcmw6444/mongoose-auto-versioning";
 
 
 
 
 export default () => {
+
+    const name = "session"
 
     const sessionModel = new mongoose.Schema(
         {
@@ -23,7 +25,7 @@ export default () => {
         {
             timestamps: true,
         }
-    );
+    ).plugin(versioning, {collection: name + "s.history", mongoose})
 
 
 
@@ -31,9 +33,9 @@ export default () => {
 
     let sessionModelR;
     if (mongoose.models.session) {
-        sessionModelR = connection.model('session');
+        sessionModelR = connection.model(name);
     } else {
-        sessionModelR = connection.model('session', sessionModel);
+        sessionModelR = connection.model(name, sessionModel);
     }
 
     return sessionModelR// connection.model("session", sessionModel);

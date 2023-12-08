@@ -1,9 +1,10 @@
 import {connection} from "../connection";
-import mongoose from "mongoose";
+import mongoose from "mongoose";import versioning from "@mnpcmw6444/mongoose-auto-versioning";
 
 
 export default () => {
 
+    const name = "event"
 
     const eventModel = new mongoose.Schema(
         {
@@ -15,7 +16,7 @@ export default () => {
         {
             timestamps: true,
         }
-    );
+    ).plugin(versioning, {collection: name + "s.history", mongoose})
 
 
 
@@ -24,9 +25,9 @@ export default () => {
 
     let eventModelR;
     if (mongoose.models.event) {
-        eventModelR = connection.model('event');
+        eventModelR = connection.model(name);
     } else {
-        eventModelR = connection.model('event', eventModel);
+        eventModelR = connection.model(name, eventModel);
     }
 
     return eventModelR//  connection.model("event", eventModel);
