@@ -1,7 +1,6 @@
 import {connection} from "../connection";
-import mongoose from "mongoose";import versioning from "@mnpcmw6444/mongoose-auto-versioning";
-
-
+import mongoose from "mongoose";
+import versioning from "@mnpcmw6444/mongoose-auto-versioning";
 
 
 export default () => {
@@ -14,19 +13,19 @@ export default () => {
                 type: String,
                 required: true,
             },
-            roleId:{
+            roleId: {
                 type: String,
                 required: true,
             },
             name: {
                 type: String,
             },
+            hiddenFor: {type: String},
         },
         {
             timestamps: true,
         }
     ).plugin(versioning, {collection: name + "s.history", mongoose})
-
 
 
     if (!connection) throw new Error("Database not initialized");
