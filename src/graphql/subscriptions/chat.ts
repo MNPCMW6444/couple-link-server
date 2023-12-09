@@ -8,7 +8,7 @@ import userModel from "../../mongo/auth/userModel";
 
 export default () => {
     messageModel().watch().on("change", async (event) => {
-        await pubsub.publish("newMessage", {});
+        await pubsub.publish("newMessage", {message: null});
         const sessionId = event.fullDocument?.sessionId;
         if (sessionId) {
             const session = await sessionModel().findById(sessionId);
