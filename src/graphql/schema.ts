@@ -86,7 +86,7 @@ export default () => {
         addrole: Role.getResolver('addrole'),
         publishrole: Role.getResolver('publishrole'),
         buy: Lic.getResolver('buy'),
-        tryToActivate:User.getResolver('tryToActivate'),
+        tryToActivate: User.getResolver('tryToActivate'),
     });
 
 
@@ -116,16 +116,14 @@ export default () => {
             },
         },
         newMessage: {
-            type: Message,
+            type: 'String',
             description: 'Subscribe to new messages',
             args: {
                 sessionId: 'String',
             },
             subscribe: () => pubsub.asyncIterator("newMessage"),
-            resolve: (x,payload) => {
-                console.log(payload);
-                console.log(x);
-                return "new";
+            resolve: () => {
+                return "refetch";
             },
         },
     });
