@@ -121,8 +121,10 @@ export default () => {
             args: {
                 sessionId: 'String',
             },
-            subscribe: () => pubsub.asyncIterator('newMessage'),
-            resolve: () => {
+            subscribe: () => pubsub.asyncIterator("newMessage"),
+            resolve: (x,payload) => {
+                console.log(payload);
+                console.log(x);
                 return "new";
             },
         },

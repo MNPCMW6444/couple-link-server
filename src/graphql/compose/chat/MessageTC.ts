@@ -19,7 +19,6 @@ export default () => {
                     me = message.message;
                     if (!message.whenQueried) message.whenQueried = Date.now()
                     message.save()
-                    console.log("readdd")
                 } else if (message.owner === "ai")
                     ai = message.message;
                 else {
