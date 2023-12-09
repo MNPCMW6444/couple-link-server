@@ -22,7 +22,9 @@ export default () => {
             message: {
                 type: String,
                 required: true,
-            }
+            },
+            whenQueried:Number,
+            whenMarked:Number,
         },
         {
             timestamps: true,

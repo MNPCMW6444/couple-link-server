@@ -12,24 +12,30 @@ export default () => {
 
         const getTriplets = async (userPhone: string, sessionId: string) => {
             const messages = await Message.find({sessionId: sessionId});
-            let me = "", other = "", ai = "";
+            let me = "", other = "", ai = "", v2 = -1;
             const triplets = [];
             messages.forEach((message) => {
                 if (message.owner === userPhone) {
                     me = message.message;
-                } else if (message.owner === "ai") {
+                    message.whenQueried = Date.now()
+                    message.save()
+                    console.log("readdd")
+                } else if (message.owner === "ai")
                     ai = message.message;
-                } else {
+                else {
                     other = message.message;
+                    v2 = message.whenQueried ? message.whenQueried : -1
                 }
+
                 if (me && other && ai) {
-                    triplets.push([me, other, ai]);
+                    triplets.push([me, other, ai, v2]);
                     me = "";
                     other = "";
                     ai = "";
+                    v2 = -1;
                 }
             });
-            triplets.push([me, other, ai]);
+            triplets.push([me, other, ai, v2]);
             return triplets
         }
 
@@ -47,8 +53,7 @@ export default () => {
             args: {sessionId: 'String!'},
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
-
-                return getTriplets(context.user.phone, args.sessionId)
+                return getTriplets(context.user.phone, args.sessionId);
             }
         });
 
