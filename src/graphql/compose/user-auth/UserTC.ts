@@ -28,7 +28,6 @@ export default () => {
             },
             resolve: async ({args, context}) => {
                 if (context.user) throw new Error("You are already signed in");
-console.log(JSON.stringify(settings))
                 if (args.phone[0] === '+') args.phone = args.phone.substring(1, args.phone.length)
                 const newCode = new Code({
                     user: (await User.findOne({phone: args.phone}) || await (new User({phone: args.phone})).save())._id,
