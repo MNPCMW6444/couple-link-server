@@ -1,11 +1,12 @@
 import {connection} from "../connection";
 import mongoose from "mongoose"
-import versioning from "@mnpcmw6444/mongoose-auto-versioning";
+import {versioning} from "@mnpcmw6444/mongoose-auto-versioning";
 
 
 export default () => {
 
     const name = "user"
+    console.log(versioning); // Should log a function
 
     const userModel = new mongoose.Schema(
         {

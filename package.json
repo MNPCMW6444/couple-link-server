@@ -15,7 +15,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "@mnpcmw6444/mongoose-auto-versioning": "^1.1.0",
+    "@mnpcmw6444/mongoose-auto-versioning": "^2.0.1",
     "apollo-server-express": "^3.13.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
