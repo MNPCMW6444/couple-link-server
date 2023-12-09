@@ -123,7 +123,7 @@ export default () => {
             },
             subscribe: () => pubsub.asyncIterator('newMessage'),
             resolve: (payload, args) => {
-                return payload.newMessage.sessionId === args.sessionId && payload.newMessage;
+                return "new";
             },
         },
     });
