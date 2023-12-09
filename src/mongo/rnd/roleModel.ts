@@ -1,5 +1,6 @@
 import { connection } from "../connection";
-import mongoose from "mongoose";import versioning from "@mnpcmw6444/mongoose-auto-versioning";
+import mongoose from "mongoose";
+import {versioning} from "@mnpcmw6444/mongoose-auto-versioning";
 
 
 
