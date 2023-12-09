@@ -32,7 +32,7 @@ export default () => {
 
     if (!connection) throw new Error("Database not initialized");
 
-    let pairModelR: mongoose.Model<any, unknown, unknown, {}, any, any>;
+    let pairModelR: mongoose.Model<any, unknown, unknown, {}, any>;
     if (mongoose.models.pair) {
         pairModelR = connection.model(name);
     } else {

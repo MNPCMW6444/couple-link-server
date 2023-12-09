@@ -122,7 +122,7 @@ export default () => {
                 sessionId: 'String',
             },
             subscribe: () => pubsub.asyncIterator('newMessage'),
-            resolve: (payload, args) => {
+            resolve: () => {
                 return "new";
             },
         },
