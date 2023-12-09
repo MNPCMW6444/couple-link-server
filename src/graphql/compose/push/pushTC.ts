@@ -59,10 +59,11 @@ export default () => {
             resolve: async ({context, args}) => {
                 if (!context.user) throw new Error("Please sign in first");
 
-                await Push.findOneAndRemove({
+                const toDelete= await Push.findOne({
                     userId: context.user._id,
                     deviceName: args.pushName
                 });
+                await toDelete.deleteOne();
                 return "removed";
             }
         });
