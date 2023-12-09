@@ -17,7 +17,7 @@ export default () => {
             messages.forEach((message) => {
                 if (message.owner === userPhone) {
                     me = message.message;
-                    message.whenQueried = Date.now()
+                    if (!message.whenQueried) message.whenQueried = Date.now()
                     message.save()
                     console.log("readdd")
                 } else if (message.owner === "ai")
